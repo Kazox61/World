@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a0ae2288c9b4c9a807dc9572701da09, type: 3}
+  m_Name: Water
+  m_EditorClassIdentifier: 
+  defaultSprite: {fileID: -353267362, guid: 5273cff723239a34eaf85f9ff1065a38, type: 3}
+  rules:
+  - neighbors: 0000000002000000000000000100000001000000000000000100000000000000
+    sprites:
+    - {fileID: 1286546635, guid: 5273cff723239a34eaf85f9ff1065a38, type: 3}
+    ruleTransform: 0
+    animationSpeed: 0
+    perlinScale: 0
+    randomTransform: 0
+    colliderType: 0
+    output: 0
+    offsetX: 0
+    offsetY: 0
+  - neighbors: 0000000002000000000000000200000001000000000000000100000000000000
+    sprites:
+    - {fileID: 1287962615, guid: 5273cff723239a34eaf85f9ff1065a38, type: 3}
+    ruleTransform: 0
+    animationSpeed: 0
+    perlinScale: 0
+    randomTransform: 0
+    colliderType: 0
+    output: 0
+    offsetX: 0
+    offsetY: 0
+  - neighbors: 0000000001000000000000000200000001000000000000000200000000000000
+    sprites:
+    - {fileID: -1851151578, guid: 5273cff723239a34eaf85f9ff1065a38, type: 3}
+    ruleTransform: 0
+    animationSpeed: 0
+    perlinScale: 0
+    randomTransform: 0
+    colliderType: 0
+    output: 0
+    offsetX: 0
+    offsetY: 0
+  - neighbors: 0000000001000000000000000200000001000000000000000100000000000000
+    sprites:
+    - {fileID: 215226548, guid: 5273cff723239a34eaf85f9ff1065a38, type: 3}
+    ruleTransform: 0
+    animationSpeed: 0
+    perlinScale: 0
+    randomTransform: 0
+    colliderType: 0
+    output: 0
+    offsetX: 0
+    offsetY: 0

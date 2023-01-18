@@ -1,0 +1,192 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a0ae2288c9b4c9a807dc9572701da09, type: 3}
+  m_Name: Modifier
+  m_EditorClassIdentifier: 
+  defaultSprite: {fileID: 21300000, guid: 198318d4a5337dc4e89dd0c70dce82b7, type: 3}
+  rules:
+  - neighbors: 0000000002000000000000000200000002000000000000000200000000000000
+    sprites:
+    - {fileID: 21300000, guid: 198318d4a5337dc4e89dd0c70dce82b7, type: 3}
+    ruleTransform: 0
+    animationSpeed: 0
+    perlinScale: 0
+    randomTransform: 0
+    colliderType: 0
+    output: 0
+    offsetX: 0
+    offsetY: 0
+  - neighbors: 0000000002000000000000000200000001000000000000000200000000000000
+    sprites:
+    - {fileID: 21300000, guid: d7cd5020a23cd3c48874024707c06faa, type: 3}
+    ruleTransform: 0
+    animationSpeed: 0
+    perlinScale: 0
+    randomTransform: 0
+    colliderType: 0
+    output: 0
+    offsetX: 0
+    offsetY: 0
+  - neighbors: 0000000002000000000000000100000001000000000000000200000000000000
+    sprites:
+    - {fileID: 21300000, guid: b0d83881531e1fe4a83d0b7ef03340f4, type: 3}
+    ruleTransform: 0
+    animationSpeed: 0
+    perlinScale: 0
+    randomTransform: 0
+    colliderType: 0
+    output: 0
+    offsetX: 0
+    offsetY: 0
+  - neighbors: 0000000002000000000000000100000002000000000000000200000000000000
+    sprites:
+    - {fileID: 21300000, guid: 360aede38fbb9b24780bdc3d4b40266d, type: 3}
+    ruleTransform: 0
+    animationSpeed: 0
+    perlinScale: 0
+    randomTransform: 0
+    colliderType: 0
+    output: 0
+    offsetX: 0
+    offsetY: 0
+  - neighbors: 0000000001000000000000000200000001000000000000000200000000000000
+    sprites:
+    - {fileID: 21300000, guid: 2d103a67d0e41184da045283b9d1cbfd, type: 3}
+    ruleTransform: 0
+    animationSpeed: 0
+    perlinScale: 0
+    randomTransform: 0
+    colliderType: 0
+    output: 0
+    offsetX: 0
+    offsetY: 0
+  - neighbors: 0000000001000000000000000100000001000000000000000200000000000000
+    sprites:
+    - {fileID: 21300000, guid: 7a27d8f53544453468dbbc8461e4b76d, type: 3}
+    ruleTransform: 0
+    animationSpeed: 0
+    perlinScale: 0
+    randomTransform: 0
+    colliderType: 0
+    output: 0
+    offsetX: 0
+    offsetY: 0
+  - neighbors: 0000000001000000000000000100000002000000000000000200000000000000
+    sprites:
+    - {fileID: 21300000, guid: 0a3c87305b667524cb7890dafeffded8, type: 3}
+    ruleTransform: 0
+    animationSpeed: 0
+    perlinScale: 0
+    randomTransform: 0
+    colliderType: 0
+    output: 0
+    offsetX: 0
+    offsetY: 0
+  - neighbors: 0000000001000000000000000200000002000000000000000200000000000000
+    sprites:
+    - {fileID: 21300000, guid: d5cea5dddfdeae640a46c1815cbcae04, type: 3}
+    ruleTransform: 0
+    animationSpeed: 0
+    perlinScale: 0
+    randomTransform: 0
+    colliderType: 0
+    output: 0
+    offsetX: 0
+    offsetY: 0
+  - neighbors: 0000000001000000000000000200000001000000000000000100000000000000
+    sprites:
+    - {fileID: 21300000, guid: 10686ce55a6c9a14699cf355121caf22, type: 3}
+    ruleTransform: 0
+    animationSpeed: 0
+    perlinScale: 0
+    randomTransform: 0
+    colliderType: 0
+    output: 0
+    offsetX: 0
+    offsetY: 1
+  - neighbors: 0000000001000000000000000100000001000000000000000100000000000000
+    sprites:
+    - {fileID: 21300000, guid: d7a2ff7384b63ec42804a6ca0d5fb9b3, type: 3}
+    ruleTransform: 0
+    animationSpeed: 0
+    perlinScale: 0
+    randomTransform: 0
+    colliderType: 0
+    output: 0
+    offsetX: 0
+    offsetY: 1
+  - neighbors: 0000000001000000000000000100000002000000000000000100000000000000
+    sprites:
+    - {fileID: 21300000, guid: 7aeb0b9b75f5623419f2f91928883028, type: 3}
+    ruleTransform: 0
+    animationSpeed: 0
+    perlinScale: 0
+    randomTransform: 0
+    colliderType: 0
+    output: 0
+    offsetX: 0
+    offsetY: 1
+  - neighbors: 0000000001000000000000000200000002000000000000000100000000000000
+    sprites:
+    - {fileID: 21300000, guid: 8ec0bb367afd0ba4bb85abc449e98bbc, type: 3}
+    ruleTransform: 0
+    animationSpeed: 0
+    perlinScale: 0
+    randomTransform: 0
+    colliderType: 0
+    output: 0
+    offsetX: 0
+    offsetY: 1
+  - neighbors: 0000000002000000000000000200000001000000000000000100000000000000
+    sprites:
+    - {fileID: 21300000, guid: d0e56d211b0c50443b8afd21cb55cc4d, type: 3}
+    ruleTransform: 0
+    animationSpeed: 0
+    perlinScale: 0
+    randomTransform: 0
+    colliderType: 0
+    output: 0
+    offsetX: 0
+    offsetY: 1
+  - neighbors: 0000000002000000000000000100000001000000000000000100000000000000
+    sprites:
+    - {fileID: 21300000, guid: 74df70f67e28b8a40ab4edf9574978cc, type: 3}
+    ruleTransform: 0
+    animationSpeed: 0
+    perlinScale: 0
+    randomTransform: 0
+    colliderType: 0
+    output: 0
+    offsetX: 0
+    offsetY: 1
+  - neighbors: 0000000002000000000000000100000002000000000000000100000000000000
+    sprites:
+    - {fileID: 21300000, guid: 1da3994b96889cc47b345e28f8a96396, type: 3}
+    ruleTransform: 0
+    animationSpeed: 0
+    perlinScale: 0
+    randomTransform: 0
+    colliderType: 0
+    output: 0
+    offsetX: 0
+    offsetY: 1
+  - neighbors: 0000000002000000000000000200000002000000000000000100000000000000
+    sprites:
+    - {fileID: 21300000, guid: 255cf22a1812f2c41a347e8ac4510cfb, type: 3}
+    ruleTransform: 0
+    animationSpeed: 0
+    perlinScale: 0
+    randomTransform: 0
+    colliderType: 0
+    output: 0
+    offsetX: 0
+    offsetY: 1
