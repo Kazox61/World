@@ -8,7 +8,7 @@ namespace GameNS.Actor {
         private void Start() {
             var config = ActorConfigCore.GetConfig(configName);
             Delay.Start(() => {
-                Actor.CreateActor(config, Vector3.zero);
+                Actor.Create(config, Vector3.zero);
             }, 3);
         }
     }

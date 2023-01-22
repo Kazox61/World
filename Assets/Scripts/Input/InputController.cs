@@ -1,83 +1,95 @@
 ﻿using System;
-using GameNS.Config;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
-using WorldNS;
 
-namespace ServiceNS {
+namespace GameNS.WorldEditor {
     public class InputController : MonoBehaviour {
-
-        public InputField inputConfigName;
-        public SpriteRenderer previewSprite;
-        public SpriteRenderer mouseIndicator;
-
-        private EntityConfig activeConfig;
+        public static InputController Instance { get; private set; }
         
-        public string ConfigName => inputConfigName.text;
-        public bool IsMouseOverUI => EventSystem.current.IsPointerOverGameObject();
-        public Vector3 MouseWorldPosition => Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        
+        public event Action OnLeftMouseStarted; 
+        public event Action OnLeftMouseCanceled; 
+        public event Action OnRightMouse;
+        public event Action<Vector2> OnPositionMouse;
+        public event Action<float> OnScrollWheel;
+        public event Action<Vector2> OnMovementKeyboard;
+        public event Action OnKeyDownKeyboardK;
+        
+        private Vector2 lastMousePosition = Vector2.zero;
 
-        public void Start() {
-            OnConfigNameChanged();
+        public bool isLeftMousePressed = false;
+        public bool IsMouseOverUI => EventSystem.current.IsPointerOverGameObject();
+
+        public void Awake() {
+            Instance = this;
         }
 
         public void Update() {
-            OnSave();
-            OnLeftClick();
-            OnRightClick();
-            UpdatePosition();
+            CheckLeftMouse();
+            CheckRightMouse();
+            CheckScrollWheelMouse();
+            CheckPositionMouse();
+            CheckMovementKeyboard();
+            CheckKeyDownKeyboard(KeyCode.K, OnKeyDownKeyboardK);
         }
 
-        private void UpdatePosition() {
-            if (activeConfig == null) {
+        private void CheckPositionMouse() {
+            if (IsMouseOverUI) {
                 return;
             }
-            var position = activeConfig.GetAreaCenter(MouseWorldPosition);
-            var blocked = FieldController.instance.IsAreaBlocked(position, activeConfig.sizeX, activeConfig.sizeY);
-            if (blocked) {
-                previewSprite.color = new Color(1f, 0f, 0f, 0.5f);
+
+            var mousePosition = (Vector2)Input.mousePosition;
+            if (mousePosition.Equals(lastMousePosition)) {
+                OnPositionMouse?.Invoke(mousePosition);
             }
-            else {
-                previewSprite.color = new Color(1f, 1f, 1f, 0.5f);
-            }
-            previewSprite.transform.localPosition = position;
-            mouseIndicator.transform.localPosition = position;
+
+            lastMousePosition = mousePosition;
         }
 
-        public void OnConfigNameChanged() {
-            var config = EntityConfigCore.GetConfig(ConfigName);
-            if (config == null) {
-                return;
+        private void CheckLeftMouse() {
+            if (Input.GetMouseButtonUp(0) && isLeftMousePressed) {
+                isLeftMousePressed = false;
+                OnLeftMouseCanceled?.Invoke();
             }
-            activeConfig = config;
-            previewSprite.sprite = config.defaultSprite;
-            mouseIndicator.size = new Vector2(config.sizeX, config.sizeY);
-
-        }
-
-        public void OnSave() {
-            if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.LeftControl)) {
-                FileService.SaveEntities(FieldController.instance.entities);
-            }
-        }
-
-        public void OnLeftClick() {
             if (IsMouseOverUI) {
                 return;
             }
             if (Input.GetMouseButtonDown(0)) {
-                FieldController.instance.TryCreateEntity(EntityConfigCore.GetConfig(ConfigName), MouseWorldPosition);
+                isLeftMousePressed = true;
+                OnLeftMouseStarted?.Invoke();
             }
         }
 
-        public void OnRightClick() {
+        private void CheckRightMouse() {
             if (IsMouseOverUI) {
                 return;
             }
             if (Input.GetMouseButtonDown(1)) {
-                FieldController.instance.TryRemoveEntity(MouseWorldPosition);
+                OnRightMouse?.Invoke();
             }
+        }
+
+        private void CheckScrollWheelMouse() {
+            var scrollDelta = Input.mouseScrollDelta.y;
+            if (scrollDelta != 0) {
+                OnScrollWheel?.Invoke(scrollDelta);
+            }
+        }
+
+        private void CheckKeyDownKeyboard(KeyCode keyCode, Action action) {
+            if (Input.GetKeyDown(keyCode)) {
+                action.Invoke();
+            }
+        }
+
+        private void CheckMovementKeyboard() {
+            var x = Input.GetAxis("Horizontal");
+            var y = Input.GetAxis("Vertical");
+            if (x == 0f && y == 0f) {
+                return;
+            }
+            OnMovementKeyboard?.Invoke(new Vector2(x, y));
+            
         }
     }
 }

@@ -7,13 +7,13 @@ using UnityEngine;
 
 namespace WorldNS {
     public class FieldController : MonoBehaviour {
-        public static FieldController instance;
+        public static FieldController Instance { get; private set; }
         
         public List<Field> occupiedFields = new List<Field>();
         public List<Entity> entities = new List<Entity>();
 
         public void Awake() {
-            instance = this;
+            Instance = this;
         }
 
         public void Start() {
@@ -23,12 +23,13 @@ namespace WorldNS {
         private void LoadEntitiesFromFile() {
             var json = FileService.loadEntityJson();
             foreach (var entityJson in json) {
-                TryCreateEntity(EntityConfigCore.GetConfig(entityJson.name), entityJson.position.GetV2());
+                TryCreateEntity(EntityConfigCore.GetConfig(entityJson.name), entityJson.position.GetV2(), out _);
             }
         }
 
-        public bool TryCreateEntity(EntityConfig entityConfig, Vector2 position) {
-            var exist = TryGetEntity(position, out var existingEntity);
+        public bool TryCreateEntity(EntityConfig entityConfig, Vector2 position, out Entity entity) {
+            entity = null;
+            var exist = TryGetEntity(position, out entity);
             if (exist) {
                 return false;
             }
@@ -44,15 +45,15 @@ namespace WorldNS {
                 return false;
             }
 
-            CreateEntity(entityConfig, centerPoint, startPoint, sizeX, sizeY);
+            entity = CreateEntity(entityConfig, centerPoint, startPoint, sizeX, sizeY);
 
-            UpdateEntities();
+            UpdateNeighbors(position);
 
             return true;
         }
 
-        private void CreateEntity(EntityConfig entityConfig, Vector2 centerPoint, Vector2 startPoint, int sizeX, int sizeY) {
-            var entity = Entity.CreateEntity(entityConfig, centerPoint);
+        private Entity CreateEntity(EntityConfig entityConfig, Vector2 centerPoint, Vector2 startPoint, int sizeX, int sizeY) {
+            var entity = Entity.Create(entityConfig, centerPoint);
 
             entities.Add(entity);
             entity.config = entityConfig;
@@ -65,6 +66,8 @@ namespace WorldNS {
                     occupiedFields.Add(field);
                 }
             }
+
+            return entity;
         }
 
         public bool TryGetEntity(Vector2 position, out Entity entity) {
@@ -96,7 +99,7 @@ namespace WorldNS {
             }
             RemoveEntity(entity);
             
-            UpdateEntities();
+            UpdateNeighbors(position);
             return true;
         }
 
@@ -115,9 +118,15 @@ namespace WorldNS {
             return false;
         }
         
-        private void UpdateEntities() {
-            foreach (var entity in entities) {
-                entity.UpdateSprite();
+        private void UpdateNeighbors(Vector2 position) {
+            for (int y = -1; y <= 1; y++) {
+                for (int x = -1; x <= 1; x++) {
+                    var offset = new Vector2(x, y);
+                    var found = TryGetEntity(position + offset, out var entity);
+                    if (found) {
+                        entity.UpdateSprite();
+                    }
+                }
             }
         }
     }

@@ -21,7 +21,6 @@ namespace ServiceNS {
                 pool = new Stack<GameObject>();
                 poolRegister.Add(prefab, pool);
             }
-
             if (pool.Count > 0) {
                 gameObject = pool.Pop();
                 gameObject.SetActive(true);
@@ -32,7 +31,7 @@ namespace ServiceNS {
             return gameObject.GetComponent<T>();
         }
 
-        public void ReleaseToPool(GameObject gameObject, GameObject prefab) {
+        public void Release(GameObject gameObject, GameObject prefab) {
             poolRegister.TryGetValue(prefab, out Stack<GameObject> pool);
 
             if (pool.Contains(gameObject)) {

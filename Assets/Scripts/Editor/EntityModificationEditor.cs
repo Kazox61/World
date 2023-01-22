@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using GameNS.Entity;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using System.Reflection;
+using GameNS.Entity;
 
 namespace EditorNS {
     [CustomEditor(typeof(EntityModification))]

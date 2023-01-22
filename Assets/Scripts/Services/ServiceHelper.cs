@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace ServiceNS {
     public class ServiceHelper : MonoBehaviour {
-        public static ServiceHelper instance;
+        public static ServiceHelper Instance { get; private set; }
 
         public void Awake() {
-            instance = this;
+            Instance = this;
         }
     }
 }

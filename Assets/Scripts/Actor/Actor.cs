@@ -7,7 +7,7 @@ namespace GameNS.Actor {
 
         public ActorConfig config;
         
-        public static Actor CreateActor(ActorConfig actorConfig, Vector3 position) {
+        public static Actor Create(ActorConfig actorConfig, Vector3 position) {
             var actor = GameObjectPool.Instance.Get<Actor>(actorConfig.prefab);
             actor.config = actorConfig;
             actor.Initialize(position);

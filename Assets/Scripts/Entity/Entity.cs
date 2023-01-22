@@ -1,14 +1,20 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using ServiceNS;
 using WorldNS;
 using GameNS.Config;
+using Random = UnityEngine.Random;
 
 namespace GameNS.Entity {
     public class Entity: MonoBehaviour {
         public EntityConfig config;
         public SpriteRenderer spriteRenderer;
-        
-        public static Entity CreateEntity(EntityConfig config, Vector3 position) {
+
+        public event Action OnBreak;
+        public event Action OnHit;
+        public event Action OnTouch;
+
+        public static Entity Create(EntityConfig config, Vector3 position) {
             var entity = GameObjectPool.Instance.Get<Entity>(config.prefab);
             entity.Initialize(position);
             entity.config = config;
@@ -41,7 +47,7 @@ namespace GameNS.Entity {
                     if (x != 0 || y != 0) {
                         var offset = new Vector2Int(x, y);
                         var position = transform.position;
-                        var success = FieldController.instance.TryGetEntity(
+                        var success = FieldController.Instance.TryGetEntity(
                             new Vector2(position.x + offset.x, position.y + offset.y),
                             
                             out var entity
@@ -70,7 +76,26 @@ namespace GameNS.Entity {
         }
 
         public void ReleaseToPool() {
-            GameObjectPool.Instance.ReleaseToPool(gameObject, config.prefab);
+            GameObjectPool.Instance.Release(gameObject, config.prefab);
+        }
+
+        public void DropItems() {
+            foreach (var dropItem in config.dropItems) {
+                var dropAmount = Random.Range(dropItem.minAmount, dropItem.maxAmount + 1);
+                for (int i = 0; i < dropAmount; i++) {
+                    var item = DropItem.Create(dropItem.dropItemConfig, transform.position);
+                    item.config = dropItem.dropItemConfig;
+                }
+            }
+        }
+
+        public void Break() {
+            DropItems();
+            FieldController.Instance.RemoveEntity(this);
+        }
+
+        public void Update() {
+            
         }
     }
 }

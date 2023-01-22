@@ -12,7 +12,7 @@ namespace GameNS.Config {
         public int sizeY = 1;
         public bool blockField = true;
         public int hardness = 10;
-        public DropItem[] dropItems;
+        public DropItemInfo[] dropItems;
         
         public Vector2 GetAreaCenter(Vector2 position) {
             var x = sizeX % 2 == 0
