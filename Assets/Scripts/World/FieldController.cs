@@ -9,22 +9,11 @@ namespace WorldNS {
     public class FieldController : MonoBehaviour {
         public static FieldController Instance { get; private set; }
         
-        public List<Field> occupiedFields = new List<Field>();
+        public List<Tile> occupiedTiles = new List<Tile>();
         public List<Entity> entities = new List<Entity>();
 
         public void Awake() {
             Instance = this;
-        }
-
-        public void Start() {
-            LoadEntitiesFromFile();
-        }
-
-        private void LoadEntitiesFromFile() {
-            var json = FileService.loadEntityJson();
-            foreach (var entityJson in json) {
-                TryCreateEntity(EntityConfigCore.GetConfig(entityJson.name), entityJson.position.GetV2(), out _);
-            }
         }
 
         public bool TryCreateEntity(EntityConfig entityConfig, Vector2 position, out Entity entity) {
@@ -62,8 +51,8 @@ namespace WorldNS {
             for (int y = 0; y < sizeY; y++) {
                 for (int x = 0; x < sizeX; x++) {
                     var point = new Vector2(startPoint.x + x, startPoint.y + y);
-                    var field = new Field(point, area);
-                    occupiedFields.Add(field);
+                    var tile = new Tile(point, area);
+                    occupiedTiles.Add(tile);
                 }
             }
 
@@ -74,19 +63,19 @@ namespace WorldNS {
             entity = null;
             var floor = Vector2Int.FloorToInt(position);
 
-            var field = occupiedFields.FirstOrDefault(field => field.position.Equals(floor));
-            if (field == null) {
+            var tile = occupiedTiles.FirstOrDefault(match => match.position.Equals(floor));
+            if (tile == null) {
                 return false;
             }
 
-            entity = field.area.entity;
+            entity = tile.area.entity;
             return true;
         }
 
         public void RemoveEntity(Entity entity) {
-            var fields = occupiedFields.Where(field => field.area.entity == entity);
+            var tiles = occupiedTiles.Where(tile => tile.area.entity == entity);
             entities.Remove(entity);
-            occupiedFields.RemoveAll(field => fields.Contains(field));
+            occupiedTiles.RemoveAll(tile => tiles.Contains(tile));
             entity.ReleaseToPool();
         }
 

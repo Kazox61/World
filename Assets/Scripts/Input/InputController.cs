@@ -14,6 +14,7 @@ namespace GameNS.WorldEditor {
         public event Action<float> OnScrollWheel;
         public event Action<Vector2> OnMovementKeyboard;
         public event Action OnKeyDownKeyboardK;
+        public event Action OnKeyDownKeyboardP;
         
         private Vector2 lastMousePosition = Vector2.zero;
 
@@ -31,6 +32,7 @@ namespace GameNS.WorldEditor {
             CheckPositionMouse();
             CheckMovementKeyboard();
             CheckKeyDownKeyboard(KeyCode.K, OnKeyDownKeyboardK);
+            CheckKeyDownKeyboard(KeyCode.P, OnKeyDownKeyboardP);
         }
 
         private void CheckPositionMouse() {
