@@ -3106,4 +3106,3 @@ MonoBehaviour:
   - {fileID: 1731911202}
   - {fileID: 1548616037}
   gameObjectFollowing: {fileID: 519420028}
-  activeChunkPos: {x: 0, y: 0}

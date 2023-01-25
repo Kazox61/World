@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using GameNS.Entity;
 using Newtonsoft.Json;
@@ -21,6 +22,9 @@ namespace WorldNS {
 
         public static Chunk[] Load() {
             var file = Resources.Load<TextAsset>("save/chunks");
+            if (file == null) {
+                return Array.Empty<Chunk>();
+            }
             var fileData = file.text;
             var data = JsonConvert.DeserializeObject<ChunkData[]>(fileData);
             var chunks = new Chunk[data.Length];

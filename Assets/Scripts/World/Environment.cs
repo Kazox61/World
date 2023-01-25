@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Extensions;
@@ -11,21 +12,32 @@ using UnityEngine.Tilemaps;
 namespace WorldNS {
     public class Environment : MonoBehaviour {
         public const int CHUNK_SIZE = 16;
-        private const int UNLOAD_RADIUS = 10;
-        private const int CHUNK_LOAD_SIZE = 1;
+        private const int UNLOAD_RADIUS = 16;
+        private const int CHUNK_LOAD_SIZE = 2;
         
         public Tilemap[] layers;
         public GameObject gameObjectFollowing;
         
         private readonly Dictionary<Vector2Int, Field> fields = new();
         private List<Chunk> chunks = new List<Chunk>();
-        public Vector2Int currentChunkPos;
+        private Dictionary<Vector2Int, IEnumerator> loadingChunks = new Dictionary<Vector2Int, IEnumerator>();
+        private Dictionary<Vector2Int, IEnumerator> unloadingChunks = new Dictionary<Vector2Int, IEnumerator>();
+        private Dictionary<Vector2Int, IEnumerator> loadingQueueChunks = new Dictionary<Vector2Int, IEnumerator>();
+        private Dictionary<Vector2Int, IEnumerator> unloadingQueueChunks = new Dictionary<Vector2Int, IEnumerator>();
+        private Vector2Int currentChunkPos;
 
         public void Start() {
             chunks = ChunkLoader.Load().ToList();
             for (var y = -CHUNK_LOAD_SIZE; y <= CHUNK_LOAD_SIZE; y++) {
                 for (var x = -CHUNK_LOAD_SIZE; x <= CHUNK_LOAD_SIZE; x++) {
-                    LoadChunk(new Vector2Int(x,y));
+                    
+                    var chunkPos = new Vector2Int(x,y);
+                    
+                    var loadContainer = new CoroutineContainer();
+                    var load = LoadChunkAsync(chunkPos, loadContainer);
+                    loadContainer.enumerator = load;
+                    
+                    StartCoroutine(load);
                 }
             }
 
@@ -57,7 +69,27 @@ namespace WorldNS {
             chunk.entities = entitiesData.ToArray();
         }
 
-        private void LoadChunk(Vector2Int chunkPos) {
+        public static Vector2Int GetRefPoint(Vector2Int chunkPos) {
+            return chunkPos * CHUNK_SIZE;
+        }
+
+        private IEnumerator LoadChunkAsync(Vector2Int chunkPos, CoroutineContainer container) {
+            var self = container.enumerator;
+            if (loadingChunks.ContainsKey(chunkPos)) {
+                StopCoroutine(self);
+                if (unloadingQueueChunks.TryGetValue(chunkPos, out var other)) {
+                    StopCoroutine(other);
+                }
+            }
+            
+            loadingQueueChunks.Add(chunkPos, self);
+            while (unloadingChunks.ContainsKey(chunkPos)) {
+                yield return null;
+            }
+            
+            loadingQueueChunks.Remove(chunkPos);
+            loadingChunks.Add(chunkPos, self);
+            
             var chunk = chunks.FirstOrDefault(match => match.chunkPos.Equals(chunkPos));
             if (chunk == null) {
                 chunk = new Chunk(chunkPos);
@@ -69,9 +101,11 @@ namespace WorldNS {
                 var x = i % CHUNK_SIZE + chunk.bounds.xMin;
                 var y = Mathf.FloorToInt(i / CHUNK_SIZE) + chunk.bounds.yMin;
 
-                var dirt = TerrainConfigCore.GetConfig("Dirt");
-                layers[0].SetTile(new Vector3Int(x,y,0), dirt);
+                var terrainConfig = TerrainConfigCore.GetConfig(string.IsNullOrEmpty(field.terrain) ? "Dirt" : field.terrain);
+                field.terrain = terrainConfig.configName;
+                layers[(int)terrainConfig.layer].SetTile(new Vector3Int(x,y,0), terrainConfig);
                 fields.Add(new Vector2Int(x, y), field);
+                yield return null;
             }
 
             foreach (var entityData in chunk.entities) {
@@ -79,10 +113,29 @@ namespace WorldNS {
                     EntityConfigCore.GetConfig(entityData.name),
                     new Vector2(entityData.position.x, entityData.position.y),
                     out _);
+                yield return null;
             }
-        }
 
-        private void UnLoadChunk(Vector2Int chunkPos) {
+            loadingChunks.Remove(chunkPos);
+        }
+        
+        private IEnumerator UnloadChunkAsync(Vector2Int chunkPos, CoroutineContainer container) {
+            var self = container.enumerator;
+            if (unloadingChunks.ContainsKey(chunkPos)) {
+                StopCoroutine(self);
+                if (loadingQueueChunks.TryGetValue(chunkPos, out var other)) {
+                    StopCoroutine(other);
+                }
+            }
+            
+            unloadingQueueChunks.Add(chunkPos, self);
+            while (loadingChunks.ContainsKey(chunkPos)) {
+                yield return null;
+            }
+            
+            unloadingQueueChunks.Remove(chunkPos);
+            unloadingChunks.Add(chunkPos, self);
+            
             var chunk = new Chunk(chunkPos);
             
             UpdateChunk(chunk, pos => {
@@ -91,13 +144,11 @@ namespace WorldNS {
             }, entity => {
                 FieldController.Instance.RemoveEntity(entity);
             });
-            
+            yield return null;
             var index = chunks.FindIndex(match => match.chunkPos.Equals(chunkPos));
             chunks[index] = chunk;
-        }
 
-        public static Vector2Int GetRefPoint(Vector2Int chunkPos) {
-            return chunkPos * CHUNK_SIZE;
+            unloadingChunks.Remove(chunkPos);
         }
 
         private void ProcessLeaveChunk(Vector3 position) {
@@ -136,8 +187,18 @@ namespace WorldNS {
                 }
                 var chunkPosUnload = currentChunkPos + offsetUnload;
                 var chunkPosLoad = currentChunkPos + offsetLoad;
-                UnLoadChunk(chunkPosUnload);
-                LoadChunk(chunkPosLoad);
+
+
+                var unloadContainer = new CoroutineContainer();
+                var loadContainer = new CoroutineContainer();
+                var unload = UnloadChunkAsync(chunkPosUnload, unloadContainer);
+                var load = LoadChunkAsync(chunkPosLoad, loadContainer);
+                unloadContainer.enumerator = unload;
+                loadContainer.enumerator = load;
+                
+                
+                StartCoroutine(unload);
+                StartCoroutine(load);
             }
             currentChunkPos += direction;
         }
@@ -148,5 +209,9 @@ namespace WorldNS {
             }
             ChunkLoader.Save(chunks);
         }
+    }
+
+    public class CoroutineContainer {
+        public IEnumerator enumerator;
     }
 }
