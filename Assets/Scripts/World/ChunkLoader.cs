@@ -1,9 +1,15 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using Extensions;
+using GameNS.Config;
 using GameNS.Entity;
+using GameNS.WorldEditor;
 using Newtonsoft.Json;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace WorldNS {
     public static class ChunkLoader {
@@ -21,20 +27,23 @@ namespace WorldNS {
         }
 
         public static Chunk[] Load() {
+            var chunks = Array.Empty<Chunk>();
             var file = Resources.Load<TextAsset>("save/chunks");
             if (file == null) {
-                return Array.Empty<Chunk>();
+                return chunks;
             }
             var fileData = file.text;
             var data = JsonConvert.DeserializeObject<ChunkData[]>(fileData);
-            var chunks = new Chunk[data.Length];
+            if (data == null) {
+                return chunks;
+            }
+            chunks = new Chunk[data.Length];
             for (int i = 0; i < data.Length; i++) {
                 var chunkData = data[i];
-                chunks[i] = chunkData.GetChunk();
+                chunks[i] = Chunk.Create(chunkData);
             }
             return chunks;
         }
-        
     }
 
     public struct ChunkData {
@@ -43,16 +52,9 @@ namespace WorldNS {
         public EntityData[] entities;
         
         public ChunkData(Chunk chunk) {
-            sector = new Sector(chunk.chunkPos.x, chunk.chunkPos.y);
+            sector = new Sector(chunk.chunkPosition.x, chunk.chunkPosition.y);
             fields = chunk.fields;
-            entities = chunk.entities;
-        }
-
-        public Chunk GetChunk() {
-            var chunk = new Chunk(new Vector2Int(sector.x, sector.y));
-            chunk.fields = fields;
-            chunk.entities = entities;
-            return chunk;
+            entities = chunk.entityData;
         }
     }
 

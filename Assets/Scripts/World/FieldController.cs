@@ -10,7 +10,6 @@ namespace WorldNS {
         public static FieldController Instance { get; private set; }
         
         public List<Tile> occupiedTiles = new List<Tile>();
-        public List<Entity> entities = new List<Entity>();
 
         public void Awake() {
             Instance = this;
@@ -43,8 +42,11 @@ namespace WorldNS {
 
         private Entity CreateEntity(EntityConfig entityConfig, Vector2 centerPoint, Vector2 startPoint, int sizeX, int sizeY) {
             var entity = Entity.Create(entityConfig, centerPoint);
-
-            entities.Add(entity);
+            
+            var fieldPos = ChunkHelper.PositionToFieldPosition(centerPoint); 
+            var chunkPosition = ChunkHelper.FieldToChunkPosition(fieldPos);
+            ChunkManager.Instance.AddEntityToChunk(chunkPosition, entity);
+            
             entity.config = entityConfig;
             var area = new Area(entity);
 
@@ -74,7 +76,11 @@ namespace WorldNS {
 
         public void RemoveEntity(Entity entity) {
             var tiles = occupiedTiles.Where(tile => tile.area.entity == entity);
-            entities.Remove(entity);
+
+            var fieldPos = ChunkHelper.PositionToFieldPosition(entity.transform.position);
+            var chunkPosition = ChunkHelper.FieldToChunkPosition(fieldPos);
+            ChunkManager.Instance.RemoveEntityFromChunk(chunkPosition, entity);
+            
             occupiedTiles.RemoveAll(tile => tiles.Contains(tile));
             entity.ReleaseToPool();
         }
