@@ -42,10 +42,10 @@ namespace WorldNS {
         }
 
         private void Update() {
-            UpdateChunks(trackingObject.transform.position);
+            UpdateTouchingChunks(trackingObject.transform.position);
         }
 
-        private void UpdateChunks(Vector3 position) {
+        private void UpdateTouchingChunks(Vector3 position) {
             var center = ChunkHelper.ChunkPositionToInitialFieldPosition(currentChunkPos) + Vector2.one * (ChunkHelper.CHUNK_SIZE * 0.5f);
             var up = center.y + UNLOAD_RADIUS;
             var down = center.y - UNLOAD_RADIUS;
@@ -53,23 +53,23 @@ namespace WorldNS {
             var right = center.x + UNLOAD_RADIUS;
 
             if (position.y > up) {
-                OnLeaveChunk(Vector2Int.up);
+                UpdateRelatedChunks(Vector2Int.up);
             }
 
             if (position.y < down) {
-                OnLeaveChunk(Vector2Int.down);
+                UpdateRelatedChunks(Vector2Int.down);
             }
 
             if (position.x < left) {
-                OnLeaveChunk(Vector2Int.left);
+                UpdateRelatedChunks(Vector2Int.left);
             }
 
             if (position.x > right) {
-                OnLeaveChunk(Vector2Int.right);
+                UpdateRelatedChunks(Vector2Int.right);
             }
         }
 
-        private void OnLeaveChunk(Vector2Int direction) {
+        private void UpdateRelatedChunks(Vector2Int direction) {
             var reverse = direction * -CHUNK_LOAD_SIZE;
             var doubled = direction * (CHUNK_LOAD_SIZE+1);
             for (int i = -CHUNK_LOAD_SIZE; i <= CHUNK_LOAD_SIZE; i++) {
@@ -82,18 +82,39 @@ namespace WorldNS {
                 var chunkPosUnload = currentChunkPos + offsetUnload;
                 var chunkPosLoad = currentChunkPos + offsetLoad;
 
-                TryGetChunk(chunkPosUnload, out var unloadingChunk);
-                StartCoroutine(unloadingChunk.Destruct());
-                
-                var success = TryGetChunk(chunkPosLoad, out var loadingChunk);
-                if (!success) {
-                    loadingChunk = new Chunk(chunkPosLoad);
-                    chunks.Add(loadingChunk);
-                }
-                StartCoroutine(loadingChunk.Construct());
-                
+                UpdateChunk(chunkPosUnload, chunkPosLoad);
             }
             currentChunkPos += direction;
+        }
+
+        private void UpdateChunk(Vector2Int chunkPosUnload, Vector2Int chunkPosLoad) {
+            TryGetChunk(chunkPosUnload, out var unloadingChunk);
+
+            if (unloadingChunk.coroutineDestruct != null) {
+                if (unloadingChunk.coroutineConstruct != null) {
+                    StopCoroutine(unloadingChunk.coroutineConstruct);
+                }
+            }
+            else {
+                unloadingChunk.coroutineDestruct = unloadingChunk.Destruct();
+
+                StartCoroutine(unloadingChunk.coroutineDestruct);
+            }
+            
+            var success = TryGetChunk(chunkPosLoad, out var loadingChunk);
+            if (!success) {
+                loadingChunk = new Chunk(chunkPosLoad);
+                chunks.Add(loadingChunk);
+            }
+
+            if (loadingChunk.coroutineConstruct != null) {
+                if (loadingChunk.coroutineDestruct != null) {
+                    StopCoroutine(loadingChunk.coroutineDestruct);
+                }
+                return;
+            }
+            loadingChunk.coroutineConstruct = loadingChunk.Construct();
+            StartCoroutine(loadingChunk.coroutineConstruct);
         }
 
         private bool TryGetChunk(Vector2Int chunkPosition, out Chunk chunk) {
@@ -112,9 +133,7 @@ namespace WorldNS {
         }
         
         public void AddFieldToChunk(Vector2Int fieldPosition, Field field) {
-            var chunkPos = ChunkHelper.FieldToChunkPosition(fieldPosition);
             TryGetChunk(ChunkHelper.FieldToChunkPosition(fieldPosition), out var chunk);
-            
             chunk.AddField(fieldPosition, field);
         }
         

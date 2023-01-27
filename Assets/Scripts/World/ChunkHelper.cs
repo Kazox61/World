@@ -3,6 +3,8 @@
 namespace WorldNS {
     public static class ChunkHelper {
         public const int CHUNK_SIZE = 16;
+        public const int CONSTRUCT_AMOUNT_PER_FRAME = 10;
+        public const int DESTRUCT_AMOUNT_PER_FRAME = 10;
         
         public static Vector2Int ChunkPositionToInitialFieldPosition(Vector2Int chunkPos) {
             return chunkPos * CHUNK_SIZE;

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using GameNS.Entity;
+using WorldNS;
 
 namespace GameNS.Config {
     [CreateAssetMenu(fileName = "EntityConfigBase", menuName = "ScriptableObjects/EntityConfig", order = 0)]
