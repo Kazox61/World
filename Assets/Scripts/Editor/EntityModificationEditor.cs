@@ -5,7 +5,8 @@ using UnityEditorInternal;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using System.Reflection;
-using GameNS.Entity;
+using SetupNS;
+using GameNS;
 
 namespace EditorNS {
     [CustomEditor(typeof(EntityModification))]
@@ -57,9 +58,9 @@ namespace EditorNS {
 
         public void OnEnable() {
             if (Modification.rules == null) {
-                Modification.rules = new List<Rule>();
+                Modification.rules = new List<GameNS.ModificationRule>();
             }
-            reorderableList = new ReorderableList(Modification.rules, typeof(Rule), true, true, true, true);
+            reorderableList = new ReorderableList(Modification.rules, typeof(GameNS.ModificationRule), true, true, true, true);
             reorderableList.drawHeaderCallback = OnDrawHeader;
             reorderableList.drawElementCallback = OnDrawElement;
             reorderableList.elementHeightCallback = GetElementHeight;
@@ -75,10 +76,10 @@ namespace EditorNS {
         private float GetElementHeight(int index) {
             if (Modification.rules != null && Modification.rules.Count > 0) {
                 switch (Modification.rules[index].output) {
-                    case Rule.OutputSprite.Random:
+                    case GameNS.ModificationRule.OutputSprite.Random:
                         return DEFAULT_ELEMENT_HEIGHT + SINGLE_LINE_HEIGHT * (Modification.rules[index].sprites.Length + 3) +
                                PADDING_BETWEEN_RULES;
-                    case Rule.OutputSprite.Animation:
+                    case GameNS.ModificationRule.OutputSprite.Animation:
                         return DEFAULT_ELEMENT_HEIGHT + SINGLE_LINE_HEIGHT * (Modification.rules[index].sprites.Length + 2) +
                                PADDING_BETWEEN_RULES;
                 }
@@ -88,7 +89,7 @@ namespace EditorNS {
         }
 
         private void OnDrawElement(Rect rect, int index, bool isActive, bool isFocused) {
-            Rule rule = Modification.rules[index];
+	        GameNS.ModificationRule modificationRule = Modification.rules[index];
 
             float yPos = rect.yMin + 2f;
             float height = rect.height - PADDING_BETWEEN_RULES;
@@ -99,9 +100,9 @@ namespace EditorNS {
             Rect spriteRect = new Rect(rect.xMax - matrixWidth - 5f, yPos, matrixWidth, DEFAULT_ELEMENT_HEIGHT);
 
             EditorGUI.BeginChangeCheck();
-            RuleInspectorOnGUI(inspectorRect, rule);
-            RuleMatrixOnGUI(matrixRect, rule);
-            SpriteOnGUI(spriteRect, rule);
+            RuleInspectorOnGUI(inspectorRect, modificationRule);
+            RuleMatrixOnGUI(matrixRect, modificationRule);
+            SpriteOnGUI(spriteRect, modificationRule);
             if (EditorGUI.EndChangeCheck())
                 Save();
         }
@@ -127,7 +128,7 @@ namespace EditorNS {
                 
         }
         
-        private void RuleMatrixOnGUI(Rect rect, Rule rule) {
+        private void RuleMatrixOnGUI(Rect rect, GameNS.ModificationRule modificationRule) {
             Handles.color = EditorGUIUtility.isProSkin ? new Color(1f, 1f, 1f, 0.2f) : new Color(0f, 0f, 0f, 0.2f);
 			int index = 0;
 			float w = rect.width / 3f;
@@ -152,18 +153,18 @@ namespace EditorNS {
 					Rect r = new Rect(rect.xMin + x * w, rect.yMin + y * h, w - 1, h - 1);
 					if (x != 1 || y != 1)
 					{
-						switch (rule.neighbors[index])
+						switch (modificationRule.neighbors[index])
 						{
-							case Rule.Neighbor.This:
+							case GameNS.ModificationRule.Neighbor.This:
 								GUI.DrawTexture(r, Arrows[y*3 + x]);
 								break;
-							case Rule.Neighbor.NotThis:
+							case GameNS.ModificationRule.Neighbor.NotThis:
 								GUI.DrawTexture(r, Arrows[9]);
 								break;
 						}
 						if (Event.current.type == EventType.MouseDown && r.Contains(Event.current.mousePosition))
 						{
-							rule.neighbors[index] = (Rule.Neighbor) (((int)rule.neighbors[index] + 1) % 3);
+							modificationRule.neighbors[index] = (GameNS.ModificationRule.Neighbor) (((int)modificationRule.neighbors[index] + 1) % 3);
 							GUI.changed = true;
 							Event.current.Use();
 						}
@@ -172,22 +173,22 @@ namespace EditorNS {
 					}
 					else
 					{
-						switch (rule.ruleTransform)
+						switch (modificationRule.ruleTransform)
 						{
-							case Rule.Transform.Rotated:
+							case GameNS.ModificationRule.Transform.Rotated:
 								//GUI.DrawTexture(r, autoTransforms[0]);
 								break;
-							case Rule.Transform.MirrorX:
+							case GameNS.ModificationRule.Transform.MirrorX:
 								//GUI.DrawTexture(r, autoTransforms[1]);
 								break;
-							case Rule.Transform.MirrorY:
+							case GameNS.ModificationRule.Transform.MirrorY:
 								//GUI.DrawTexture(r, autoTransforms[2]);
 								break;
 						}
 
 						if (Event.current.type == EventType.MouseDown && r.Contains(Event.current.mousePosition))
 						{
-							rule.ruleTransform = (Rule.Transform)(((int)rule.ruleTransform + 1) % 4);
+							modificationRule.ruleTransform = (GameNS.ModificationRule.Transform)(((int)modificationRule.ruleTransform + 1) % 4);
 							GUI.changed = true;
 							Event.current.Use();
 						}
@@ -198,34 +199,34 @@ namespace EditorNS {
 
         public static void OnSelect(object userdata) {
 	        var data = (MenuItemData) userdata;
-	        data.rule.ruleTransform = data.newValue;
+	        data.modificationRule.ruleTransform = data.newValue;
         }
 
         private class MenuItemData {
-	        public Rule rule;
-	        public Rule.Transform newValue;
+	        public GameNS.ModificationRule modificationRule;
+	        public GameNS.ModificationRule.Transform newValue;
 
-	        public MenuItemData(Rule mRule, Rule.Transform mNewValue)
+	        public MenuItemData(GameNS.ModificationRule mModificationRule, GameNS.ModificationRule.Transform mNewValue)
 	        {
-		        this.rule = mRule;
+		        this.modificationRule = mModificationRule;
 		        this.newValue = mNewValue;
 	        }
         }
 
-        private void SpriteOnGUI(Rect rect, Rule rule) {
-	        rule.sprites[0] = EditorGUI.ObjectField(new Rect(rect.xMax - rect.height, rect.yMin, rect.height, rect.height), rule.sprites[0], typeof (Sprite), false) as Sprite;
+        private void SpriteOnGUI(Rect rect, GameNS.ModificationRule modificationRule) {
+	        modificationRule.sprites[0] = EditorGUI.ObjectField(new Rect(rect.xMax - rect.height, rect.yMin, rect.height, rect.height), modificationRule.sprites[0], typeof (Sprite), false) as Sprite;
         }
         
-        private void RuleInspectorOnGUI(Rect rect, Rule rule) {
+        private void RuleInspectorOnGUI(Rect rect, GameNS.ModificationRule modificationRule) {
             float y = rect.yMin;
 			EditorGUI.BeginChangeCheck();
 			
 			GUI.Label(new Rect(rect.xMin, y, LABEL_WIDTH, SINGLE_LINE_HEIGHT), "offsetX");
-			rule.offsetX = EditorGUI.FloatField(new Rect(rect.xMin + LABEL_WIDTH, y, rect.width - LABEL_WIDTH, SINGLE_LINE_HEIGHT), rule.offsetX);
+			modificationRule.offsetX = EditorGUI.FloatField(new Rect(rect.xMin + LABEL_WIDTH, y, rect.width - LABEL_WIDTH, SINGLE_LINE_HEIGHT), modificationRule.offsetX);
 			y += SINGLE_LINE_HEIGHT;
 			
 			GUI.Label(new Rect(rect.xMin, y, LABEL_WIDTH, SINGLE_LINE_HEIGHT), "offsetY");
-			rule.offsetY = EditorGUI.FloatField(new Rect(rect.xMin + LABEL_WIDTH, y, rect.width - LABEL_WIDTH, SINGLE_LINE_HEIGHT), rule.offsetY);
+			modificationRule.offsetY = EditorGUI.FloatField(new Rect(rect.xMin + LABEL_WIDTH, y, rect.width - LABEL_WIDTH, SINGLE_LINE_HEIGHT), modificationRule.offsetY);
 			y += SINGLE_LINE_HEIGHT;
 			
 			

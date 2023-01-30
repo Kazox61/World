@@ -1,15 +1,17 @@
 ﻿using ServiceNS;
 using UnityEngine;
-using GameNS.Config;
+using SetupNS;
 
-namespace GameNS.Actor {
+namespace GameNS {
     public class Actor: MonoBehaviour {
+        public static SetupCollectionBase<SetupActor> SetupCollection =>
+            SetupCollectionLoader.SetupCollectionActor;
 
-        public ActorConfig config;
+        public SetupActor setup;
         
-        public static Actor Create(ActorConfig actorConfig, Vector3 position) {
-            var actor = GameObjectPool.Instance.Get<Actor>(actorConfig.prefab);
-            actor.config = actorConfig;
+        public static Actor Create(SetupActor setupActor, Vector3 position) {
+            var actor = GameObjectPool.Instance.Get<Actor>(setupActor.prefab);
+            actor.setup = setupActor;
             actor.Initialize(position);
             return actor;
         }

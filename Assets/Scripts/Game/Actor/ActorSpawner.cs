@@ -1,14 +1,14 @@
 ﻿using ServiceNS;
 using UnityEngine;
-using GameNS.Config;
+using SetupNS;
 
-namespace GameNS.Actor {
+namespace GameNS {
     public class ActorSpawner : MonoBehaviour {
-        public string configName = "Player";
+        public string setupKey = "Player";
         private void Start() {
-            var config = ActorConfigCore.GetConfig(configName);
+            var setup = Actor.SetupCollection.GetSetup(setupKey);
             Delay.Start(() => {
-                Actor.Create(config, Vector3.zero);
+                Actor.Create(setup, Vector3.zero);
             }, 3);
         }
     }

@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using GameNS.Config;
-using GameNS.Entity;
+using SetupNS;
+using GameNS;
+using SaveSystemNS;
 using UnityEngine;
 
 namespace WorldNS {
     public class Chunk {
-        public Vector2Int chunkPosition;
+        public Vector2Int position;
         
         public Field[] fields;
-        public EntityData[] entityData;
-        private List<Entity> entities;
+        public DataEntity[] dataEntities;
+        public List<Entity> entities;
 
         public IEnumerator coroutineDestruct;
         public IEnumerator coroutineConstruct;
@@ -19,9 +20,9 @@ namespace WorldNS {
         private bool isConstructed;
         
 
-        public Chunk(Vector2Int chunkPos) {
-            chunkPosition = chunkPos;
-            entityData = Array.Empty<EntityData>();
+        public Chunk(Vector2Int pos) {
+            position = pos;
+            dataEntities = Array.Empty<DataEntity>();
             entities = new List<Entity>();
             
             var arraySize = ChunkHelper.CHUNK_SIZE * ChunkHelper.CHUNK_SIZE;
@@ -30,15 +31,7 @@ namespace WorldNS {
                 fields[i] = new Field();
             }
         }
-        
-        public static Chunk Create(ChunkData chunkData) {
-            var chunk = new Chunk(new Vector2Int(chunkData.sector.x, chunkData.sector.y)) {
-                fields = chunkData.fields,
-                entityData = chunkData.entities
-            };
-            return chunk;
-        }
-        
+
         public IEnumerator Construct() {
             while (isConstructed) {
                 yield return null;
@@ -48,9 +41,9 @@ namespace WorldNS {
             for (var i = 0; i < fields.Length; i++) {
                 var field = fields[i];
 
-                var position = ChunkHelper.FieldArrayIndexToPosition(i,
-                    ChunkHelper.ChunkPositionToInitialFieldPosition(chunkPosition));
-                TerrainController.Instance.TryPlaceField(position, field);
+                var fieldPosition = ChunkHelper.FieldArrayIndexToPosition(i,
+                    ChunkHelper.ChunkPositionToInitialFieldPosition(position));
+                //TerrainController.Instance.SetField(fieldPosition, field);
                 
                 if (frame >= ChunkHelper.CONSTRUCT_AMOUNT_PER_FRAME || i  >= fields.Length - 1) {
                     frame = 0;
@@ -58,13 +51,9 @@ namespace WorldNS {
                 }
                 frame++;
             }
-
-            for (int i = 0; i < entityData.Length; i++) {
-                var data = entityData[i];
-                FieldController.Instance.TryCreateEntity(
-                    EntityConfigCore.GetConfig(data.name),
-                    new Vector2(data.position.x, data.position.y),
-                    out var _);
+            for (int i = 0; i < dataEntities.Length; i++) {
+                var data = dataEntities[i];
+                //Create Entity
                 
                 if (frame >= ChunkHelper.CONSTRUCT_AMOUNT_PER_FRAME || i  >= fields.Length - 1) {
                     frame = 0;
@@ -83,14 +72,14 @@ namespace WorldNS {
             }
             
             var frame = 0;
-            entityData = new EntityData[entities.Count];
+            dataEntities = new DataEntity[entities.Count];
             var clone = new List<Entity>(entities);
             
             for (int i = 0; i < clone.Count; i++) {
                 var entity = clone[i];
-                var data = new EntityData(entity);
-                FieldController.Instance.RemoveEntity(entity);
-                entityData[i] = data;
+                var data = EntityTransformer.ToData(entity);
+                //RemoveEntity
+                dataEntities[i] = data;
                 
                 if (frame >= ChunkHelper.DESTRUCT_AMOUNT_PER_FRAME || i  >= fields.Length - 1) {
                     frame = 0;
@@ -100,10 +89,9 @@ namespace WorldNS {
             }
 
             for (int i = 0; i < fields.Length; i++) {
-                var field = fields[i];
-                var position = ChunkHelper.FieldArrayIndexToPosition(i,
-                    ChunkHelper.ChunkPositionToInitialFieldPosition(chunkPosition));
-                TerrainController.Instance.TryRemoveField(position, field);
+                var fieldPosition = ChunkHelper.FieldArrayIndexToPosition(i,
+                    ChunkHelper.ChunkPositionToInitialFieldPosition(position));
+                //TerrainController.Instance.ClearField(fieldPosition);
                 
                 if (frame >= ChunkHelper.DESTRUCT_AMOUNT_PER_FRAME || i  >= fields.Length - 1) {
                     frame = 0;
@@ -125,14 +113,13 @@ namespace WorldNS {
         }
 
         public void AddField(Vector2Int fieldPosition, Field field) {
-            var pos = fieldPosition - ChunkHelper.ChunkPositionToInitialFieldPosition(chunkPosition);
+            var pos = fieldPosition - ChunkHelper.ChunkPositionToInitialFieldPosition(position);
             var index = pos.x + pos.y * ChunkHelper.CHUNK_SIZE;
             fields[index] = field;
         }
 
         public void RemoveField(Vector2Int fieldPosition) {
-            var pos = fieldPosition - ChunkHelper.ChunkPositionToInitialFieldPosition(chunkPosition);
-            var index = pos.x + pos.y * ChunkHelper.CHUNK_SIZE;
+            var index = ChunkHelper.PositionToFieldArrayIndex(fieldPosition, position);
             fields[index] = new Field();
         }
     }

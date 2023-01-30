@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using GameNS.Entity;
+using GameNS;
 using UnityEngine;
 
 namespace WorldNS {

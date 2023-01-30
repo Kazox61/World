@@ -30,5 +30,10 @@ namespace WorldNS {
                 Mathf.FloorToInt(position.y)
             );
         }
+
+        public static int PositionToFieldArrayIndex(Vector2Int fieldPosition, Vector2Int chunkPosition) {
+            var pos = fieldPosition - ChunkHelper.ChunkPositionToInitialFieldPosition(chunkPosition);
+            return pos.x + pos.y * ChunkHelper.CHUNK_SIZE;
+        }
     }
 }

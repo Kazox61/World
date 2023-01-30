@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using GameNS.Entity;
+using GameNS;
 using UnityEngine;
 
 namespace WorldNS {
@@ -22,6 +22,32 @@ namespace WorldNS {
             LoadChunks();
         }
 
+        public IEnumerable<Entity> EnumerateEntities(Vector2Int field) {
+            var chunkPosition = ChunkHelper.FieldToChunkPosition(field);
+            var hasChunk = TryGetChunk(chunkPosition, out var chunk);
+
+            if (!hasChunk) {
+                return Enumerable.Empty<Entity>();
+            }
+
+            return chunk.entities;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         private void LoadChunks() {
             chunks = ChunkLoader.Load().ToList();
             
@@ -34,6 +60,7 @@ namespace WorldNS {
 
                     if (!hasChunk) {
                         chunk = new Chunk(chunkPos);
+                        chunks.Add(chunk);
                     }
                     StartCoroutine(chunk.Construct());
 
@@ -117,8 +144,8 @@ namespace WorldNS {
             StartCoroutine(loadingChunk.coroutineConstruct);
         }
 
-        private bool TryGetChunk(Vector2Int chunkPosition, out Chunk chunk) {
-            chunk = chunks.FirstOrDefault(element => element.chunkPosition.Equals(chunkPosition));
+        public bool TryGetChunk(Vector2Int chunkPosition, out Chunk chunk) {
+            chunk = chunks.FirstOrDefault(element => element.position.Equals(chunkPosition));
             return chunk != null;
         }
 
