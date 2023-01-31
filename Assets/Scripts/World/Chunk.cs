@@ -7,6 +7,7 @@ using SaveSystemNS;
 using UnityEngine;
 
 namespace WorldNS {
+    [System.Serializable]
     public class Chunk {
         public Vector2Int position;
         

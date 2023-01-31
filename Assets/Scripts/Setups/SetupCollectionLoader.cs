@@ -10,8 +10,8 @@ namespace SetupNS {
         [RuntimeInitializeOnLoadMethod]
         private static void OnLoad() {
             SetupCollectionActor = Resources.Load<SetupCollectionActor>("SetupCollections/SetupCollectionActor");
-            SetupCollectionEntity = Resources.Load<SetupCollectionEntity>("SetupCollections/SetupCollectionActor");
-            SetupCollectionTerrain = Resources.Load<SetupCollectionTerrain>("SetupCollections/SetupCollectionActor");
+            SetupCollectionEntity = Resources.Load<SetupCollectionEntity>("SetupCollections/SetupCollectionEntity");
+            SetupCollectionTerrain = Resources.Load<SetupCollectionTerrain>("SetupCollections/SetupCollectionTerrain");
         }
     }
 }

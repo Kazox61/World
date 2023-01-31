@@ -11,6 +11,7 @@ namespace WorldNS {
             var entities = ChunkManager.Instance.EnumerateEntities(field);
 
             foreach (var entity in entities) {
+                Debug.Log(entity);
                 if (
                     !setupEntity.blockField &&
                     setupEntity == entity.setup
@@ -20,11 +21,11 @@ namespace WorldNS {
 
                 if (
                     setupEntity.blockField &&
-                    entity.setup.blockField
+                    !entity.setup.blockField
                 ) {
                     continue; //Placing a blocking entity onto a non-blocking entity is allowed => needs to be cleared somewhere else
                 }
-
+                Debug.Log(entity.OverlapsWith(setupEntity, field));
                 if (entity.OverlapsWith(setupEntity, field)) {
                     result.Add(entity);
                 }

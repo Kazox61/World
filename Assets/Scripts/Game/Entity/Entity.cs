@@ -1,4 +1,5 @@
-﻿using Extensions;
+﻿using System;
+using Extensions;
 using UnityEngine;
 using ServiceNS;
 using WorldNS;
@@ -12,21 +13,40 @@ namespace GameNS {
         public SetupEntity setup;
         public SpriteRenderer spriteRenderer;
 
-        public Vector2Int Field => (Vector2Int)Vector3Int.FloorToInt(transform.position);
+        public Vector2Int Field => GridHelper.PositionToField(transform.position);
 
         public static Entity Create(SetupEntity setup, Vector3 position) {
             var entity = GameObjectPool.Instance.Get<Entity>(setup.prefab);
-            entity.Initialize(position);
             entity.setup = setup;
+            entity.Initialize(position);
             return entity;
         }
         
         private void Initialize(Vector3 position) {
-            transform.position = position;
+            var rect = GridHelper.GetRect(GridHelper.PositionToField(position), setup.size);
+            transform.position = rect.center;
         }
         
         public void Remove() {
             GameObjectPool.Instance.Release(gameObject, setup.prefab);
+        }
+
+        public static bool CanCreateEntity(SetupEntity setupEntity, Vector2Int field) {
+            var layer = new AreaDetectionLayerEntity();
+            var detectionSet = new DetectionSet() { field = field, setupEntity = setupEntity };
+            return layer.IsClean(detectionSet);
+        }
+
+        public static Entity GetEntity(Vector2Int field) {
+            var entities = ChunkManager.Instance.EnumerateEntities(field);
+            var mouseRect = new Rect(field.x, field.y, 1, 1);
+            
+            foreach (var entity in entities) {
+                entity.OverlapsWith(mouseRect);
+                return entity;
+            }
+
+            return null;
         }
 
         public bool OverlapsWith(SetupEntity setupEntity, Vector2Int field) {
@@ -37,8 +57,16 @@ namespace GameNS {
 
         public bool OverlapsWith(Rect otherRect) {
             var ownRect = setup.GetRect(Field);
-
-            return ownRect.OverlapsWith(otherRect);
+            Debug.DrawLine(new Vector3(ownRect.xMin, ownRect.yMin), new Vector3(ownRect.xMax, ownRect.yMin), Color.green, 100);
+            Debug.DrawLine(new Vector3(ownRect.xMin, ownRect.yMax), new Vector3(ownRect.xMax, ownRect.yMax), Color.green, 100);
+            Debug.DrawLine(new Vector3(ownRect.xMin, ownRect.yMin), new Vector3(ownRect.xMin, ownRect.yMax), Color.green, 100);
+            Debug.DrawLine(new Vector3(ownRect.xMax, ownRect.yMin), new Vector3(ownRect.xMax, ownRect.yMax), Color.green, 100);
+            
+            Debug.DrawLine(new Vector3(otherRect.xMin, otherRect.yMin), new Vector3(otherRect.xMax, otherRect.yMin), Color.magenta, 100);
+            Debug.DrawLine(new Vector3(otherRect.xMin, otherRect.yMax), new Vector3(otherRect.xMax, otherRect.yMax), Color.magenta, 100);
+            Debug.DrawLine(new Vector3(otherRect.xMin, otherRect.yMin), new Vector3(otherRect.xMin, otherRect.yMax), Color.magenta, 100);
+            Debug.DrawLine(new Vector3(otherRect.xMax, otherRect.yMin), new Vector3(otherRect.xMax, otherRect.yMax), Color.magenta, 100);
+            return ownRect.Overlaps(otherRect);
         }
     }
 }

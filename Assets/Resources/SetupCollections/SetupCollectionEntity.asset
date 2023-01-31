@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d99bc092b1c744068ecacd244640aca7, type: 3}
   m_Name: SetupCollectionEntity
   m_EditorClassIdentifier: 
-  setupCollection: []
+  setupCollection:
+  - {fileID: 11400000, guid: 51a5dfa53a10b8b4a9dfc15cd52bbff8, type: 2}
+  - {fileID: 11400000, guid: 07d519f589459f84498f8545d8f980ba, type: 2}
