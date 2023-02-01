@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WorldNS {
+namespace GameNS {
     public class Field {
         public string terrain = "";
         public string decoration = "";

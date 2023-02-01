@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace WorldNS {
+namespace GameNS {
     public class FieldController {
         private Vector2Int field;
 

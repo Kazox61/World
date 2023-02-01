@@ -3,7 +3,7 @@ using SetupNS;
 using GameNS;
 using UnityEngine;
 
-namespace WorldNS {
+namespace GameNS {
     public static class EntityHelper {
         public static List<Entity> GetOverlappingEntities(SetupEntity setupEntity, Vector2Int field) {
             var result = new List<Entity>();

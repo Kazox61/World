@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using SaveSystemNS;
 using UnityEngine;
 
-namespace WorldNS {
+namespace GameNS {
     public static class ChunkLoader {
         public static void Save(List<Chunk> chunks) {
             var data = new List<DataChunk>();

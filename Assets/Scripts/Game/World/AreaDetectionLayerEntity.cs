@@ -1,4 +1,4 @@
-﻿namespace WorldNS {
+﻿namespace GameNS {
     public class AreaDetectionLayerEntity: AreaDetectionLayerBase {
         public override bool IsClean(DetectionSet detectionSet) {
             return IsCleanAgainstEntity(detectionSet);

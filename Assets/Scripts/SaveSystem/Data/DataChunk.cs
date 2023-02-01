@@ -1,4 +1,4 @@
-﻿using WorldNS;
+﻿using GameNS;
 
 namespace SaveSystemNS {
     public struct DataChunk {

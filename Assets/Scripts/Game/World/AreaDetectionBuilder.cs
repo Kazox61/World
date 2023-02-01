@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WorldNS {
+namespace GameNS {
     public class AreaDetectionBuilder {
         public static AreaDetectionBuilder Instance { get; } = new AreaDetectionBuilder();
 

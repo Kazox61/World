@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using ServiceNS;
-using WorldNS;
+using GameNS;
 using SetupNS;
 
 namespace GameNS {

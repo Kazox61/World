@@ -2,7 +2,7 @@
 using SetupNS;
 using TMPro;
 using UnityEngine;
-using WorldNS;
+using GameNS;
 
 namespace GameNS.WorldEditor {
     public class InputWorldEditor : MonoBehaviour {

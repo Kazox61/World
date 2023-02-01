@@ -1,7 +1,7 @@
 ﻿using SetupNS;
 using UnityEngine;
 
-namespace WorldNS {
+namespace GameNS {
     public struct DetectionSet {
         public SetupEntity setupEntity;
         public SetupTerrain setupTerrain;

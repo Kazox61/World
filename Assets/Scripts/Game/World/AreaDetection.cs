@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WorldNS {
+namespace GameNS {
     public class AreaDetection {
         public List<AreaDetectionLayerBase> areaDetectionLayers = new List<AreaDetectionLayerBase>();
 

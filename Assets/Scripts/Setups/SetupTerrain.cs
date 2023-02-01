@@ -1,6 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using WorldNS;
+using GameNS;
 
 namespace SetupNS {
     [CreateAssetMenu(fileName = "SetupTerrainBase", menuName = "SetupTerrain", order = 0)]

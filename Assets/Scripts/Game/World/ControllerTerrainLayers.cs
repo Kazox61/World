@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using Tile = SetupNS.Tile;
 
-namespace WorldNS {
+namespace GameNS {
     public class ControllerTerrainLayers : MonoBehaviour {
         public static ControllerTerrainLayers Instance { get; private set; }
 

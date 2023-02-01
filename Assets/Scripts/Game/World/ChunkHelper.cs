@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace WorldNS {
+namespace GameNS {
     public static class ChunkHelper {
         public const int CHUNK_SIZE = 16;
         public const int CONSTRUCT_AMOUNT_PER_FRAME = 10;

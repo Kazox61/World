@@ -1,6 +1,6 @@
 ﻿using SetupNS;
 using UnityEngine;
-using WorldNS;
+using GameNS;
 
 namespace GameNS {
     public static class TerrainHelper {

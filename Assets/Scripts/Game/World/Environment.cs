@@ -1,7 +1,7 @@
 ﻿using SetupNS;
 using UnityEngine;
 
-namespace WorldNS {
+namespace GameNS {
     public class Environment {
         public static Environment Instance { get; private set; }
         

@@ -3,7 +3,7 @@ using System.Linq;
 using GameNS;
 using UnityEngine;
 
-namespace WorldNS {
+namespace GameNS {
     public class ChunkManager: MonoBehaviour {
         public static ChunkManager Instance { get; private set; }
         private const int CHUNK_LOAD_SIZE = 2;
