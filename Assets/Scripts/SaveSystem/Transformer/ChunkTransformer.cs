@@ -19,7 +19,7 @@ namespace SaveSystemNS {
         public static Chunk FromData(DataChunk dataChunk) {
             var chunk = new Chunk(new Vector2Int(dataChunk.sector.x, dataChunk.sector.y));
             chunk.fields = dataChunk.fields;
-            chunk.dataEntities = dataChunk.entities;
+            //chunk.dataEntities = dataChunk.entities;
             return chunk;
         }
 

@@ -38,13 +38,7 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Underground
-    uniqueID: 389863379
-    locked: 0
   - name: Ground
-    uniqueID: 2720503733
-    locked: 0
-  - name: Decoration
     uniqueID: 3913303041
     locked: 0
   - name: Default

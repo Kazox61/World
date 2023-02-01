@@ -15,3 +15,4 @@ MonoBehaviour:
   setupCollection:
   - {fileID: 11400000, guid: 51a5dfa53a10b8b4a9dfc15cd52bbff8, type: 2}
   - {fileID: 11400000, guid: 07d519f589459f84498f8545d8f980ba, type: 2}
+  - {fileID: 11400000, guid: 75bd82ed1ae2ada47965a444020c9527, type: 2}

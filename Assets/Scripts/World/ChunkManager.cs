@@ -49,7 +49,7 @@ namespace WorldNS {
 
 
         private void LoadChunks() {
-            chunks = ChunkLoader.Load().ToList();
+            //chunks = ChunkLoader.Load().ToList();
             
             for (var y = -CHUNK_LOAD_SIZE; y <= CHUNK_LOAD_SIZE; y++) {
                 for (var x = -CHUNK_LOAD_SIZE; x <= CHUNK_LOAD_SIZE; x++) {
@@ -147,26 +147,6 @@ namespace WorldNS {
         public bool TryGetChunk(Vector2Int chunkPosition, out Chunk chunk) {
             chunk = chunks.FirstOrDefault(element => element.position.Equals(chunkPosition));
             return chunk != null;
-        }
-
-        public void AddEntityToChunk(Vector2Int chunkPosition, Entity entity) {
-            TryGetChunk(chunkPosition, out var chunk);
-            chunk.AddEntity(entity);
-        }
-        
-        public void RemoveEntityFromChunk(Vector2Int chunkPosition, Entity entity) {
-            TryGetChunk(chunkPosition, out var chunk);
-            chunk.RemoveEntity(entity);
-        }
-        
-        public void AddFieldToChunk(Vector2Int fieldPosition, Field field) {
-            TryGetChunk(ChunkHelper.FieldToChunkPosition(fieldPosition), out var chunk);
-            chunk.AddField(fieldPosition, field);
-        }
-        
-        public void RemoveFieldFromChunk(Vector2Int fieldPosition) {
-            TryGetChunk(ChunkHelper.FieldToChunkPosition(fieldPosition), out var chunk);
-            chunk.RemoveField(fieldPosition);
         }
     }
 }

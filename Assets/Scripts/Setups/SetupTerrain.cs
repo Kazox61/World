@@ -1,32 +1,54 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using WorldNS;
 
 namespace SetupNS {
     [CreateAssetMenu(fileName = "SetupTerrainBase", menuName = "SetupTerrain", order = 0)]
     public class SetupTerrain : SetupBase {
         public Sprite defaultSprite;
-        public Sprite[] ruleSprites;
+        public int layer;
+        public bool[] ignoreDetectionLayers = { false, false, true };
+        public SetupTerrainModification setupTerrainModification;
         
-        [System.NonSerialized]
-        public Tile[] tiles;
+        [Header("Variations")]
+        [Range(0f, 1f)] 
+        public float defaultProbability = 1f;
+        public Sprite[] variationSprites;
         
         [System.NonSerialized]
         public Tile defaultTile;
         public void OnEnable() {
-            if (ruleSprites == null || ruleSprites.Length == 0) {
+            Initialize();
+        }
+
+        public void OnValidate() {
+            Initialize();
+        }
+
+        private void Initialize() {
+            defaultTile = CreateInstance<Tile>();
+            defaultTile.sprite = defaultSprite;
+
+            defaultTile.defaultProbability = defaultProbability;
+            defaultTile.variations = variationSprites;
+
+            if (setupTerrainModification != null) {
+                setupTerrainModification.OnBegin();
+            }
+        }
+
+
+        public static void CreateTerrain(SetupTerrain setupTerrain, Vector2Int field) {
+            if (!CanCreateTerrain(setupTerrain, field)) {
                 return;
             }
-            
-            tiles = new Tile[ruleSprites.Length];
-            for (int i = 0; i < ruleSprites.Length; i++) {
-                var sprite = ruleSprites[i];
-                var tile = CreateInstance<Tile>();
-                tile.sprite = sprite;
-                tiles[i] = tile;
+            ControllerTerrainLayers.Instance.SetTile(setupTerrain, field);
+        }
 
-                if (defaultSprite == sprite) {
-                    defaultTile = tile;
-                }
-            }
+        public static bool CanCreateTerrain(SetupTerrain setupTerrain, Vector2Int field) {
+            var detectionSet = new DetectionSet() { field = field, setupTerrain =  setupTerrain};
+            var areaDetection = AreaDetectionBuilder.Instance.GetAreaDetection(setupTerrain.ignoreDetectionLayers);
+            return areaDetection.IsClean(detectionSet);
         }
     }
 }

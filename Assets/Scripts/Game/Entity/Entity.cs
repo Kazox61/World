@@ -1,6 +1,4 @@
-﻿using System;
-using Extensions;
-using UnityEngine;
+﻿using UnityEngine;
 using ServiceNS;
 using WorldNS;
 using SetupNS;
@@ -15,26 +13,39 @@ namespace GameNS {
 
         public Vector2Int Field => GridHelper.PositionToField(transform.position);
 
-        public static Entity Create(SetupEntity setup, Vector3 position) {
+        private void Initialize(Vector2Int field) {
+            var center = GridHelper.FieldToPosition(field);
+            transform.position = center;
+        }
+        
+        public static Entity Create(SetupEntity setup, Vector2Int field) {
             var entity = GameObjectPool.Instance.Get<Entity>(setup.prefab);
             entity.setup = setup;
-            entity.Initialize(position);
+            entity.Initialize(field);
             return entity;
         }
-        
-        private void Initialize(Vector3 position) {
-            var rect = GridHelper.GetRect(GridHelper.PositionToField(position), setup.size);
-            transform.position = rect.center;
-        }
-        
-        public void Remove() {
-            GameObjectPool.Instance.Release(gameObject, setup.prefab);
+
+        public static Entity CreateEntity(SetupEntity setupEntity, Vector2Int field) {
+            if (!CanCreateEntity(setupEntity, field)) {
+                return null;
+            }
+
+            var entity = Create(setupEntity, field);
+
+            var chunkPosition = ChunkHelper.FieldToChunkPosition(field);
+            var success = ChunkManager.Instance.TryGetChunk(chunkPosition, out var chunk);
+            
+            chunk.AddEntity(entity);
+
+            return entity;
         }
 
+        
+
         public static bool CanCreateEntity(SetupEntity setupEntity, Vector2Int field) {
-            var layer = new AreaDetectionLayerEntity();
             var detectionSet = new DetectionSet() { field = field, setupEntity = setupEntity };
-            return layer.IsClean(detectionSet);
+            var areaDetection = AreaDetectionBuilder.Instance.GetAreaDetection(setupEntity.ignoreDetectionLayers);
+            return areaDetection.IsClean(detectionSet);
         }
 
         public static Entity GetEntity(Vector2Int field) {
@@ -67,6 +78,10 @@ namespace GameNS {
             Debug.DrawLine(new Vector3(otherRect.xMin, otherRect.yMin), new Vector3(otherRect.xMin, otherRect.yMax), Color.magenta, 100);
             Debug.DrawLine(new Vector3(otherRect.xMax, otherRect.yMin), new Vector3(otherRect.xMax, otherRect.yMax), Color.magenta, 100);
             return ownRect.Overlaps(otherRect);
+        }
+        
+        public void Remove() {
+            GameObjectPool.Instance.Release(gameObject, setup.prefab);
         }
     }
 }

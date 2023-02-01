@@ -1,6 +1,6 @@
 ﻿namespace WorldNS {
-    public class AreaDetectionLayerEntity {
-        public bool IsClean(DetectionSet detectionSet) {
+    public class AreaDetectionLayerEntity: AreaDetectionLayerBase {
+        public override bool IsClean(DetectionSet detectionSet) {
             return IsCleanAgainstEntity(detectionSet);
         }
 

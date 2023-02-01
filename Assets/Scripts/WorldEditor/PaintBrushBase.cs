@@ -43,23 +43,9 @@ namespace GameNS.WorldEditor {
         } 
         
         protected void UpdateMouseIndicator(Vector2 worldPosition) {
-            /*
-            if (Environment.Instance.entitySetup == null && Environment.Instance.terrainConfig == null) {
-                return;
-            }
-
-            if (Environment.Instance.entitySetup != null) {
-                var position = Environment.Instance.entitySetup.GetAreaCenter(worldPosition);
-                worldEditor.mouseIndicator.transform.localPosition = position;
-                return;
-            }
-
-            if (Environment.Instance.terrainConfig != null) {
-                var position = ChunkHelper.PositionToFieldPosition(worldPosition) + Vector2.one * 0.5f;
+            var field = GridHelper.PositionToField(worldPosition);
+            worldEditor.mouseIndicator.transform.localPosition = GridHelper.FieldToPosition(field);
             
-                worldEditor.mouseIndicator.transform.localPosition = position;
-            }
-            */
         }
 
         protected void UpdatePreview(Vector2 worldPosition) {

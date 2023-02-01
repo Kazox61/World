@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using SetupNS;
 using UnityEngine;
-using WorldNS;
 
 namespace GameNS.WorldEditor {
     using GameNS;
@@ -35,6 +35,9 @@ namespace GameNS.WorldEditor {
             if (!inputController.isLeftMousePressed) {
                 return;
             }
+
+            var field = GridHelper.PositionToField(currentWorldMousePosition);
+            SetupTerrain.CreateTerrain(worldEditor.currentSetupTerrain, field);
             //Environment.Instance.Place(currentWorldMousePosition);
             //if (success) {
             //  createdEntities.Add(entity);

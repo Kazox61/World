@@ -14,53 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   key: StonePath
   prefab: {fileID: 0}
-  defaultSprite: {fileID: -754899905, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  ruleSprites:
-  - {fileID: 440434311, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: -1123720977, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: -710000987, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: -379787915, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: 831594750, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: -1851222917, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: 1111661850, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: -793302505, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: 1055279404, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: -915246074, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: 431984931, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: 925912575, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: -1761842979, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: -1710452995, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: -278338866, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: 1397531155, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: -1876849594, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: 2037011025, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: 465433227, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: -252192976, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: 1470833997, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: 1269115811, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: -877944611, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: -1915643865, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: 1354884425, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: 279785754, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: 1354993056, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: -496695060, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: -1257217105, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: -43245327, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: 1051628841, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: 340242695, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: -1380097225, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: 1145522860, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: -2097249173, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: -1276125233, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: -1749957535, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: -579964963, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: -1102244332, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: 1151812936, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: 560433136, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: 1788926640, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: -22087467, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: -63116804, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: -98654401, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: 1034689297, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: -754899905, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
-  - {fileID: -1756284522, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
+  defaultSprite: {fileID: 67618808, guid: d641ec9efafebc24dad9e94e05af78fd, type: 3}
+  layer: 4
+  ignoreDetectionLayers: 000001
+  setupTerrainModification: {fileID: 11400000, guid: 384c87b17578f8243a8e46ea79be744c, type: 2}

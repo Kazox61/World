@@ -1,4 +1,5 @@
 ﻿using ServiceNS;
+using SetupNS;
 using TMPro;
 using UnityEngine;
 using WorldNS;
@@ -20,6 +21,8 @@ namespace GameNS.WorldEditor {
         private PaintBrushSimple paintBrushSimple;
         private PaintBrushLinear paintBrushLinear;
         private PaintBrushRectangular paintBrushRectangular;
+
+        public SetupTerrain currentSetupTerrain;
         
         public string ConfigName => inputConfigName.text;
         
@@ -60,7 +63,10 @@ namespace GameNS.WorldEditor {
         }
 
         public void OnConfigNameChanged() {
-            
+            var setup = SetupCollectionLoader.SetupCollectionTerrain.GetSetup(ConfigName);
+            if (setup != null) {
+                currentSetupTerrain = setup;
+            }
         }
 
         private void CameraZoom(float delta) {

@@ -16,5 +16,9 @@ namespace GameNS {
         public static Vector2Int PositionToField(Vector2 position) {
             return Vector2Int.FloorToInt(position);
         }
+
+        public static Vector2 FieldToPosition(Vector2Int field) {
+            return field + Vector2.one * 0.5f;
+        }
     }
 }
