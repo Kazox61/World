@@ -1,6 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using GameNS;
+using WorldNS;
 
 namespace SetupNS {
     [CreateAssetMenu(fileName = "SetupTerrainBase", menuName = "SetupTerrain", order = 0)]
@@ -38,11 +38,28 @@ namespace SetupNS {
         }
 
 
+        //TODO: Move maybe to Tile and rename to Terrain
         public static void CreateTerrain(SetupTerrain setupTerrain, Vector2Int field) {
+            if (setupTerrain == null) {
+                return;
+            }
             if (!CanCreateTerrain(setupTerrain, field)) {
                 return;
             }
             ControllerTerrainLayers.Instance.SetTile(setupTerrain, field);
+            var fieldController = ChunkManager.Instance.GetFieldController(field);
+            //@TODO: Move in own class or add maybe to ControllerTerrainLayers
+            if (setupTerrain.layer == 0) {
+                fieldController.terrainGround = setupTerrain;
+            }
+
+            if (setupTerrain.layer == 1) {
+                fieldController.terrainGrass = setupTerrain;
+            }
+
+            if (setupTerrain.layer == 4) {
+                fieldController.terrainDecoration = setupTerrain;
+            }
         }
 
         public static bool CanCreateTerrain(SetupTerrain setupTerrain, Vector2Int field) {

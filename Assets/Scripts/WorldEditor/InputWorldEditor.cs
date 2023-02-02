@@ -2,7 +2,7 @@
 using SetupNS;
 using TMPro;
 using UnityEngine;
-using GameNS;
+using WorldNS;
 
 namespace GameNS.WorldEditor {
     public class InputWorldEditor : MonoBehaviour {
@@ -63,7 +63,7 @@ namespace GameNS.WorldEditor {
         }
 
         public void OnConfigNameChanged() {
-            var setup = SetupCollectionLoader.SetupCollectionTerrain.GetSetup(ConfigName);
+            var setup = SetupCore.GetSetup<SetupTerrain>(ConfigName);
             if (setup != null) {
                 currentSetupTerrain = setup;
             }

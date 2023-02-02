@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using SetupNS;
 using UnityEngine;
+using WorldNS;
 
 namespace GameNS.WorldEditor {
     using GameNS;

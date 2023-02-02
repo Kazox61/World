@@ -1,8 +1,5 @@
-﻿using System;
-using ServiceNS;
-using UnityEngine;
-using GameNS;
-using Environment = GameNS.Environment;
+﻿using UnityEngine;
+using WorldNS;
 
 namespace GameNS.WorldEditor {
     public abstract class PaintBrushBase {

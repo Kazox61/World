@@ -1,34 +1,44 @@
 ﻿using System.Collections.Generic;
-using GameNS;
 using UnityEngine;
+using WorldNS;
 
 namespace SaveSystemNS {
-    public static class ChunkTransformer {
-        
-        
-        public static DataChunk ToData(Chunk chunk) {
-            var data = new DataChunk();
-            data.sector = new Sector(chunk.position.x, chunk.position.y);
-            data.fields = chunk.fields;
-            data.entities = CreateDataEntities(chunk.entities.ToArray());
+    //TODO: Do it for all data the same.
+    public class ChunkTransformer {
+        private Chunk chunk;
 
+        public ChunkTransformer(Chunk chunk) {
+            this.chunk = chunk;
+        }
+
+        public DataChunk ToData() {
+            var data = new DataChunk {
+                sector = new Sector(chunk.position.x, chunk.position.y),
+                fields = TransformFields()
+            };
             return data;
         }
 
         public static Chunk FromData(DataChunk dataChunk) {
-            var chunk = new Chunk(new Vector2Int(dataChunk.sector.x, dataChunk.sector.y));
-            chunk.fields = dataChunk.fields;
-            //chunk.dataEntities = dataChunk.entities;
+            var position = new Vector2Int(dataChunk.sector.x, dataChunk.sector.y);
+            Debug.Log(dataChunk.fields);
+            var chunk = new Chunk(
+                position,
+                ChunkManager.CHUNK_SIZE
+            ) {
+                fieldControllers = dataChunk.ToFieldControllers()
+            };
+
             return chunk;
         }
 
-        private static DataEntity[] CreateDataEntities(Entity[] entities) {
-            var dataEntities = new List<DataEntity>();
-            foreach (var entity in entities) {
-                dataEntities.Add(EntityTransformer.ToData(entity));
+        public DataField[] TransformFields() {
+            var dataFields = new List<DataField>();
+            foreach (var fieldController in chunk.fieldControllers) {
+                dataFields.Add(DataField.ToData(fieldController));
             }
 
-            return dataEntities.ToArray();
+            return dataFields.ToArray();
         }
     }
 }

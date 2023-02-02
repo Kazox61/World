@@ -1,5 +1,6 @@
 ﻿using GameNS;
 using UnityEngine;
+using WorldNS;
 
 namespace SetupNS {
     [CreateAssetMenu(fileName = "SetupEntityBase", menuName = "SetupEntity", order = 0)]
