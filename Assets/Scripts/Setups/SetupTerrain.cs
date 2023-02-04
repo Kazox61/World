@@ -48,7 +48,7 @@ namespace SetupNS {
             }
             ControllerTerrainLayers.Instance.SetTile(setupTerrain, field);
             var fieldController = ChunkManager.Instance.GetFieldController(field);
-            //@TODO: Move in own class or add maybe to ControllerTerrainLayers
+            //TODO: Move in own class or add maybe to ControllerTerrainLayers
             if (setupTerrain.layer == 0) {
                 fieldController.terrainGround = setupTerrain;
             }
@@ -61,6 +61,7 @@ namespace SetupNS {
                 fieldController.terrainDecoration = setupTerrain;
             }
         }
+        
 
         public static bool CanCreateTerrain(SetupTerrain setupTerrain, Vector2Int field) {
             var detectionSet = new DetectionSet() { field = field, setupTerrain =  setupTerrain};

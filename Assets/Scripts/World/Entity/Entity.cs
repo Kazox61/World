@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using ServiceNS;
 using GameNS;
+using SaveSystemNS;
 using SetupNS;
 
 namespace WorldNS {
@@ -8,36 +9,46 @@ namespace WorldNS {
        
         public SetupEntity setup;
         public SpriteRenderer spriteRenderer;
+        public EntityTransformer entityTransformer;
 
+        private bool constructed;
         public Vector2Int Field => GridHelper.PositionToField(transform.position);
 
         private void Initialize(Vector2Int field) {
-            var center = GridHelper.FieldToPosition(field);
-            transform.position = center;
+            transform.position = GridHelper.FieldToPosition(field);
+        }
+
+        private void Construct() {
+            if (constructed) {
+                return;
+            }
+            Constructor();
+            constructed = true;
+        }
+
+        private void Constructor() {
+            entityTransformer = new EntityTransformer(this);
         }
         
-        public static Entity Create(SetupEntity setup, Vector2Int field) {
+        public static Entity CreateEntity(SetupEntity setup, Vector2Int field) {
             var entity = GameObjectPool.Instance.Get<Entity>(setup.prefab);
             entity.setup = setup;
             entity.Initialize(field);
+            entity.Construct();
             return entity;
         }
 
-        public static Entity CreateEntity(SetupEntity setupEntity, Vector2Int field) {
+        public static Entity PlaceEntity(SetupEntity setupEntity, Vector2Int field) {
             if (!CanCreateEntity(setupEntity, field)) {
                 return null;
             }
 
-            var entity = Create(setupEntity, field);
+            var entity = CreateEntity(setupEntity, field);
 
-            var chunkPosition = ChunkHelper.FieldToChunkPosition(field);
             ChunkManager.Instance.AddEntity(field, entity);
-
             return entity;
         }
-
         
-
         public static bool CanCreateEntity(SetupEntity setupEntity, Vector2Int field) {
             var detectionSet = new DetectionSet() { field = field, setupEntity = setupEntity };
             var areaDetection = AreaDetectionBuilder.Instance.GetAreaDetection(setupEntity.ignoreDetectionLayers);

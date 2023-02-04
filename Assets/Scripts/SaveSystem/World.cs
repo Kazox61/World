@@ -1,12 +1,8 @@
 ﻿using System;
 
 namespace SaveSystemNS {
+    //@TODO: Does the world always gets updated? Or just at the end?
     public class World {
-        public DataChunk[] chunks;
-
-        //@TODO Load from Json
-        public void Create() {
-            chunks = Array.Empty<DataChunk>();
-        }
+        public DataChunk[] chunks = Array.Empty<DataChunk>();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using WorldNS;
 using UnityEditor;
+using UnityEditor.AI;
 using UnityEngine;
 
 namespace EditorNS {
@@ -12,6 +13,14 @@ namespace EditorNS {
             if (GUILayout.Button("Bake")) {
                 NavMeshPath2D.Instance.BuildNavMesh(NavMeshDebugger.centerPosition, NavMeshDebugger.size);
             }
+        }
+
+        public void OnEnable() {
+            NavMeshVisualizationSettings.showNavigation++;
+        }
+
+        public void OnDisable() {
+            NavMeshVisualizationSettings.showNavigation--;
         }
     }
 }

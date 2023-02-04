@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using UnityEditor.AI;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace WorldNS {
@@ -39,14 +39,6 @@ namespace WorldNS {
                 }
                 Gizmos.DrawLine(path[i], path[i+1]);
             }
-        }
-
-        private void OnEnable() {
-            NavMeshVisualizationSettings.showNavigation++;
-        }
-
-        private void OnDisable() {
-            NavMeshVisualizationSettings.showNavigation--;
         }
     }
 }

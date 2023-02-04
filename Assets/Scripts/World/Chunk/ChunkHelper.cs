@@ -46,6 +46,15 @@ namespace WorldNS {
                 field.y / ChunkManager.CHUNK_SIZE
             );
         }
+        
+        
+
+        public static Vector2Int FieldIndexToField(Vector2Int chunkPosition, int index) {
+            return new Vector2Int(
+                index % ChunkManager.CHUNK_SIZE + chunkPosition.x * ChunkManager.CHUNK_SIZE,
+                index / ChunkManager.CHUNK_SIZE + chunkPosition.y * ChunkManager.CHUNK_SIZE
+            );
+        }
 
     }
 }

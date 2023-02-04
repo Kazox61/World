@@ -93,13 +93,22 @@ namespace WorldNS {
         }
 
         private void ConstructChunk(Vector2Int position) {
-            var chunk = chunkStore.RestoreChunk(position) ?? new Chunk(position, CHUNK_SIZE);
+            var success = chunkStore.TryRestoreChunk(position, out var chunk);
+            if (!success) {
+                chunk = Chunk.CreateChunk(position);
+            }
             chunks.Add(chunk);
             
             foreach (var fieldController in chunk.fieldControllers) {
-                SetupTerrain.CreateTerrain(fieldController.terrainGround, fieldController.field);
-                SetupTerrain.CreateTerrain(fieldController.terrainGrass, fieldController.field);
-                SetupTerrain.CreateTerrain(fieldController.terrainDecoration, fieldController.field);
+                if (fieldController.terrainGround != null) {
+                    ControllerTerrainLayers.Instance.SetTile(fieldController.terrainGround, fieldController.field);
+                }
+                if (fieldController.terrainGrass != null) {
+                    ControllerTerrainLayers.Instance.SetTile(fieldController.terrainGrass, fieldController.field);
+                }
+                if (fieldController.terrainDecoration != null) {
+                    ControllerTerrainLayers.Instance.SetTile(fieldController.terrainDecoration, fieldController.field);
+                }
             }
         }
         
@@ -115,9 +124,9 @@ namespace WorldNS {
         }
         
         // already prepared for SaveSystem to get updated ChunkData
-        private DataChunk[] GetAllStoredData() {
+        public DataChunk[] GetAllStoredData() {
             chunkStore.StoreChunks(chunks);
-            return chunkStore.storedChunkData.ToArray();
+            return chunkStore.storedChunkData.Values.ToArray();
         }
     }
 }

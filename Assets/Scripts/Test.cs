@@ -1,4 +1,4 @@
-﻿using System;
+﻿using SaveSystemNS;
 using UnityEngine;
 using WorldNS;
 
@@ -8,6 +8,10 @@ namespace DefaultNamespace {
         public void Update() {
             var field = GridHelper.PositionToField(camera.transform.position);
             ChunkManager.Instance.UpdateChunks(field);
+        }
+
+        public void Save() {
+            SaveSystem.Instance.Save(ChunkManager.Instance.GetAllStoredData());
         }
     }
 }
