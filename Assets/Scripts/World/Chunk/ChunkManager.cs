@@ -9,15 +9,19 @@ using UnityEngine;
 
 namespace WorldNS {
     public class ChunkManager {
-        public static ChunkManager Instance = new();
+        private static ChunkManager instance;
+
+        public static ChunkManager Instance => instance ??= new ChunkManager();
         public const int CHUNK_SIZE = 16;
         private const int ACTIVE_RADIUS = 4;
 
-        public readonly ChunkStore chunkStore;
+        private readonly ChunkStore chunkStore;
+        private readonly ChunkLoader chunkLoader;
         public readonly List<Chunk> chunks = new();
 
-        public ChunkManager() {
+        private ChunkManager() {
             chunkStore = new ChunkStore();
+            chunkLoader = new ChunkLoader(this, chunkStore);
         }
 
         public void AddEntity(Vector2Int field, Entity entity) {
@@ -25,19 +29,21 @@ namespace WorldNS {
             fieldController.entities.Add(entity);
         }
 
-        //TODO: Rename, dont know about Enumerate
+        //Get All Entities in 3x3 Chunks, field is in center Chunk
         public List<Entity> EnumerateEntities(Vector2Int field) {
             var entities = new List<Entity>();
-            var chunk = GetChunkByField(field);
 
-            if (chunk == null) {
-                return entities;
-            }
+            var chunksInArea = ChunkHelper.GetChunksInArea(field, 1, this);
             
-            foreach (var fieldController in chunk.fieldControllers) {
-                entities.AddRange(fieldController.entities);
+            foreach (var chunk in chunksInArea) {
+                if (chunk == null) {
+                    continue;
+                }
+                foreach (var fieldController in chunk.fieldControllers) {
+                    entities.AddRange(fieldController.entities);
+                }
+                
             }
-
             return entities;
         }
         
@@ -58,71 +64,52 @@ namespace WorldNS {
             return null;
         }
 
-        //TODO: Move to different functions
         public void UpdateChunks(Vector2Int field) {
-            var centerChunkPosition = ChunkHelper.FieldToChunkPosition(field);
-            var positions = new List<Vector2Int>();
-            for (int y = -ACTIVE_RADIUS; y <= ACTIVE_RADIUS; y++) {
-                for (int x = -ACTIVE_RADIUS; x <= ACTIVE_RADIUS; x++) {
-                    positions.Add(centerChunkPosition + new Vector2Int(x,y));
-                }
-            }
+            var positions = GetActiveChunkPositions(field);
 
+            var unusedChunks = KeepChunksAlive(ref positions);
+            foreach (var unusedChunk in unusedChunks) {
+                chunkLoader.DestructChunk(unusedChunk);
+            }
+            
+            foreach (var position in positions) {
+                var chunk = chunkLoader.ConstructChunk(position);
+                chunks.Add(chunk);
+            }
+        }
+
+        private List<Chunk> KeepChunksAlive(ref List<Vector2Int> positions) {
             var unusedChunks = new List<Chunk>();
             foreach (var chunk in chunks) {
                 if (positions.Contains(chunk.position)) {
                     positions.Remove(chunk.position);
-                    
+
                     chunk.Keepalive();
                     continue;
                 }
-                
+
                 var isUnused = chunk.UpdateKeepalive();
                 if (isUnused) {
                     unusedChunks.Add(chunk);
                 }
             }
-            
-            foreach (var unusedChunk in unusedChunks) {
-                DestructChunk(unusedChunk);
-            }
-            
-            foreach (var position in positions) {
-                ConstructChunk(position);
-            }
+
+            return unusedChunks;
         }
 
-        private void ConstructChunk(Vector2Int position) {
-            var success = chunkStore.TryRestoreChunk(position, out var chunk);
-            if (!success) {
-                chunk = Chunk.CreateChunk(position);
-            }
-            chunks.Add(chunk);
-            
-            foreach (var fieldController in chunk.fieldControllers) {
-                if (fieldController.terrainGround != null) {
-                    ControllerTerrainLayers.Instance.SetTile(fieldController.terrainGround, fieldController.field);
-                }
-                if (fieldController.terrainGrass != null) {
-                    ControllerTerrainLayers.Instance.SetTile(fieldController.terrainGrass, fieldController.field);
-                }
-                if (fieldController.terrainDecoration != null) {
-                    ControllerTerrainLayers.Instance.SetTile(fieldController.terrainDecoration, fieldController.field);
+        private List<Vector2Int> GetActiveChunkPositions(Vector2Int field) {
+            var centerChunkPosition = ChunkHelper.FieldToChunkPosition(field);
+            var positions = new List<Vector2Int>();
+            for (int y = -ACTIVE_RADIUS; y <= ACTIVE_RADIUS; y++) {
+                for (int x = -ACTIVE_RADIUS; x <= ACTIVE_RADIUS; x++) {
+                    positions.Add(centerChunkPosition + new Vector2Int(x, y));
                 }
             }
+
+            return positions;
         }
-        
-        private void DestructChunk(Chunk chunk) {
-            chunkStore.StoreChunk(chunk);
-            
-            foreach (var fieldController in chunk.fieldControllers) {
-                fieldController.RemoveEntities();
-            }
-            ControllerTerrainLayers.Instance.ClearTilesInArea(chunk.rect);
-            
-            chunks.Remove(chunk);
-        }
-        
+
+
         // already prepared for SaveSystem to get updated ChunkData
         public DataChunk[] GetAllStoredData() {
             chunkStore.StoreChunks(chunks);

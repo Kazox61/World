@@ -5,7 +5,8 @@ using UnityEngine;
 namespace WorldNS {
     public static class ChunkHelper {
         
-        public static Chunk[] GetSurroundingChunks(Vector2Int centerChunkPosition, int size, ChunkManager chunkManager) {
+        public static Chunk[] GetChunksInArea(Vector2Int field, int size, ChunkManager chunkManager) {
+            var centerChunkPosition = FieldToChunkPosition(field);
             var surroundingChunks = new List<Chunk>();
             for (int y = -size; y <= size; y++) {
                 for (int x = -size; x <= size; x++) {
@@ -32,11 +33,8 @@ namespace WorldNS {
             return surroundingPositions.ToArray();
         }
 
-        public static bool IsInArea(Chunk chunk, Rect rect) {
-            return rect.Overlaps(chunk.rect);
-        }
-        
         public static FieldController GetFieldController(Chunk chunk, Vector2Int field) {
+            Debug.Log(chunk);
             return chunk.fieldControllers.FirstOrDefault(item => item.field.Equals(field));
         }
         
@@ -47,8 +45,6 @@ namespace WorldNS {
             );
         }
         
-        
-
         public static Vector2Int FieldIndexToField(Vector2Int chunkPosition, int index) {
             return new Vector2Int(
                 index % ChunkManager.CHUNK_SIZE + chunkPosition.x * ChunkManager.CHUNK_SIZE,

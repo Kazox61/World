@@ -57,9 +57,6 @@ namespace GameNS.WorldEditor {
             inputController.OnMovementKeyboard += direction => {
                 mainCamera.transform.position += (Vector3)(Time.deltaTime * cameraMovementSpeed * direction);
             };
-            inputController.OnKeyDownKeyboardP += () => {
-                ChunkLoader.Save(ChunkManager.Instance.chunks);
-            };
         }
 
         public void OnConfigNameChanged() {
