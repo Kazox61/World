@@ -10,13 +10,17 @@ namespace WorldNS {
             chunkManager = manager;
         }
         
-        public Chunk ConstructChunk(Vector2Int position) {
+        public void ConstructChunk(Vector2Int position) {
             var success = chunkStore.TryRestoreChunk(position, out var chunk);
             if (!success) {
                 chunk = Chunk.CreateChunk(position);
             }
-
-            return chunk;
+            chunkManager.chunks.Add(chunk);
+            foreach (var fieldController in chunk.fieldControllers) {
+                foreach (var entity in fieldController.entities) {
+                    entity.OnStartUp();
+                }
+            }
         }
         
         public void DestructChunk(Chunk chunk) {

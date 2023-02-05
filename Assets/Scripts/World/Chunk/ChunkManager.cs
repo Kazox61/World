@@ -73,8 +73,7 @@ namespace WorldNS {
             }
             
             foreach (var position in positions) {
-                var chunk = chunkLoader.ConstructChunk(position);
-                chunks.Add(chunk);
+                chunkLoader.ConstructChunk(position);
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace WorldNS {
     public class Sprite3d : MonoBehaviour {
@@ -19,6 +20,10 @@ namespace WorldNS {
         }
 
         public void Start() {
+            UpdateSpriteOrder();
+        }
+
+        public void Update() {
             UpdateSpriteOrder();
         }
     }

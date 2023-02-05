@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using SetupNS;
 using UnityEngine;
-using GameNS;
 
 namespace WorldNS {
     public static class TerrainHelper {
-        public static IEnumerable<TerrainRule> GetRules() {
-            return new TerrainRule[] {
+        public static IEnumerable<Rule> GetRules() {
+            return new Rule[] {
                 new() { input = new[] { 0, 1, 0, 2, 1, 2, 2, 0 }, output = 0 },
                 new() { input = new[] { 0, 1, 0, 1, 2, 0, 2, 2 }, output = 1 },
                 new() { input = new[] { 2, 2, 1, 2, 2, 2, 2, 2 }, output = 2 },
@@ -63,7 +62,7 @@ namespace WorldNS {
             };
         }
 
-        public static bool RuleMatches(TerrainSetup terrainSetup, TerrainRule rule, Vector2Int centerField) {
+        public static bool RuleMatches(TerrainSetup terrainSetup, Rule rule, Vector2Int centerField) {
             var tilemap = ControllerTerrainLayers.Instance.terrainLayers[terrainSetup.layer];
             var index = 0;
             for (int y = -1; y <= 1; y++) {
