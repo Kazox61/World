@@ -14,7 +14,7 @@ namespace SaveSystemNS {
                 name = entity.entitySetup.key,
                 position = new Position(position.x, position.y)
             };
-            entity.Remove();
+            //entity.Remove();
             return data;
         }
     }

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using SetupNS;
-using GameNS;
 using UnityEngine;
 
 namespace WorldNS {
@@ -11,7 +10,6 @@ namespace WorldNS {
             var entities = ChunkManager.Instance.EnumerateEntities(field);
 
             foreach (var entity in entities) {
-                Debug.Log(entity);
                 if (
                     !entitySetup.blockField &&
                     entitySetup == entity.entitySetup
@@ -25,7 +23,6 @@ namespace WorldNS {
                 ) {
                     continue; //Placing a blocking entity onto a non-blocking entity is allowed => needs to be cleared somewhere else
                 }
-                Debug.Log(entity.OverlapsWith(entitySetup, field));
                 if (entity.OverlapsWith(entitySetup, field)) {
                     result.Add(entity);
                 }

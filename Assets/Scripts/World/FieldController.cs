@@ -38,7 +38,7 @@ namespace WorldNS {
         
         public void Initialize(Vector2Int field) {
             this.field = field;
-            ground = Terrain.CreateTerrain(SetupCore.GetSetup<TerrainSetup>("Dirt"), this);
+            ground = Terrain.CreateTerrain(SetupCore.GetTerrainSetup("Dirt"), this);
             grass = null;
             decoration = null;
             entities.Clear();

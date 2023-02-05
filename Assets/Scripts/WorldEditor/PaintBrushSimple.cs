@@ -38,11 +38,13 @@ namespace GameNS.WorldEditor {
             }
 
             var field = GridHelper.PositionToField(currentWorldMousePosition);
-            SetupNS.Terrain.PlaceTerrain(worldEditor.currentTerrainSetup, field);
-            //Environment.Instance.Place(currentWorldMousePosition);
-            //if (success) {
-            //  createdEntities.Add(entity);
-            //}
+            if (worldEditor.currentTerrainSetup != null) {
+                SetupNS.Terrain.PlaceTerrain(worldEditor.currentTerrainSetup, field);
+            }
+
+            if (worldEditor.currentEntitySetup != null) {
+                Entity.PlaceEntity(worldEditor.currentEntitySetup, field);
+            }
         }
 
         public override void Undo() {

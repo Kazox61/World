@@ -37,11 +37,11 @@ namespace SaveSystemNS {
         public void FromData(DataField dataField, Vector2Int field) {
             fieldController.Initialize(field);
             
-            fieldController.ground = Terrain.CreateTerrain(SetupCore.GetSetup<TerrainSetup>(dataField.ground), fieldController);
-            fieldController.grass = Terrain.CreateTerrain(SetupCore.GetSetup<TerrainSetup>(dataField.grass), fieldController);
-            fieldController.decoration = Terrain.CreateTerrain(SetupCore.GetSetup<TerrainSetup>(dataField.decoration), fieldController);
+            fieldController.ground = Terrain.CreateTerrain(SetupCore.GetTerrainSetup(dataField.ground), fieldController);
+            fieldController.grass = Terrain.CreateTerrain(SetupCore.GetTerrainSetup(dataField.grass), fieldController);
+            fieldController.decoration = Terrain.CreateTerrain(SetupCore.GetTerrainSetup(dataField.decoration), fieldController);
             foreach (var dataEntity in dataField.entities) {
-                var setup = SetupCore.GetSetup<EntitySetup>(dataEntity.name);
+                var setup = SetupCore.GetEntitySetup(dataEntity.name);
                 var entity = Entity.CreateEntity(setup, GridHelper.PositionToField(new Vector2(dataEntity.position.x, dataEntity.position.y)));
                 fieldController.AddEntity(entity);
             }

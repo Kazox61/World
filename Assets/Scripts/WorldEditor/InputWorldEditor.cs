@@ -23,6 +23,7 @@ namespace GameNS.WorldEditor {
         private PaintBrushRectangular paintBrushRectangular;
 
         public TerrainSetup currentTerrainSetup;
+        public EntitySetup currentEntitySetup;
         
         public string ConfigName => inputConfigName.text;
         
@@ -55,15 +56,14 @@ namespace GameNS.WorldEditor {
                 paintBrushStateMachine.CurrentState.Undo();
             };
             inputController.OnMovementKeyboard += direction => {
+                if (InputController.Instance.IsMouseOverUI) return;
                 mainCamera.transform.position += (Vector3)(Time.deltaTime * cameraMovementSpeed * direction);
             };
         }
 
         public void OnConfigNameChanged() {
-            var setup = SetupCore.GetSetup<TerrainSetup>(ConfigName);
-            if (setup != null) {
-                currentTerrainSetup = setup;
-            }
+            currentTerrainSetup = SetupCore.GetTerrainSetup(ConfigName);
+            currentEntitySetup = SetupCore.GetEntitySetup(ConfigName);
         }
 
         private void CameraZoom(float delta) {
