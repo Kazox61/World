@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace WorldNS {
     public struct DetectionSet {
-        public SetupEntity setupEntity;
-        public SetupTerrain setupTerrain;
+        public EntitySetup entitySetup;
+        public TerrainSetup terrainSetup;
         public Vector2Int field;
 
     }

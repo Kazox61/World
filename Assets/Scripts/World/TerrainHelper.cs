@@ -63,8 +63,8 @@ namespace WorldNS {
             };
         }
 
-        public static bool RuleMatches(SetupTerrain setupTerrain, TerrainRule rule, Vector2Int centerField) {
-            var tilemap = ControllerTerrainLayers.Instance.terrainLayers[setupTerrain.layer];
+        public static bool RuleMatches(TerrainSetup terrainSetup, TerrainRule rule, Vector2Int centerField) {
+            var tilemap = ControllerTerrainLayers.Instance.terrainLayers[terrainSetup.layer];
             var index = 0;
             for (int y = -1; y <= 1; y++) {
                 for (int x = -1; x <= 1; x++) {
@@ -73,7 +73,7 @@ namespace WorldNS {
                         var field = centerField + offset;
                         var tile = ControllerTerrainLayers.Instance.GetTile(tilemap, field);
                         
-                        if ((rule.input[index] == 1 && tile != setupTerrain.defaultTile) || (rule.input[index] == 2 && tile == setupTerrain.defaultTile)) {
+                        if ((rule.input[index] == 1 && tile != terrainSetup.defaultTile) || (rule.input[index] == 2 && tile == terrainSetup.defaultTile)) {
                             return false;
                         }
 

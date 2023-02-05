@@ -38,7 +38,7 @@ namespace GameNS.WorldEditor {
             }
 
             var field = GridHelper.PositionToField(currentWorldMousePosition);
-            SetupTerrain.CreateTerrain(worldEditor.currentSetupTerrain, field);
+            SetupNS.Terrain.PlaceTerrain(worldEditor.currentTerrainSetup, field);
             //Environment.Instance.Place(currentWorldMousePosition);
             //if (success) {
             //  createdEntities.Add(entity);

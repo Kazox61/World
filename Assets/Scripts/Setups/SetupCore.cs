@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace SetupNS {
-    //TODO: Rename all to ActorSetup, EntitySetup ...
     public static class SetupCore {
         private static readonly Dictionary<string, SetupBase> Setups = new();
 

@@ -4,11 +4,11 @@ using SetupNS;
 
 namespace WorldNS {
     public class Actor: MonoBehaviour {
-        public SetupActor setup;
+        public ActorSetup actorSetup;
         
-        public static Actor Create(SetupActor setupActor, Vector3 position) {
-            var actor = GameObjectPool.Instance.Get<Actor>(setupActor.prefab);
-            actor.setup = setupActor;
+        public static Actor Create(ActorSetup actorSetup, Vector3 position) {
+            var actor = GameObjectPool.Instance.Get<Actor>(actorSetup.prefab);
+            actor.actorSetup = actorSetup;
             actor.Initialize(position);
             return actor;
         }

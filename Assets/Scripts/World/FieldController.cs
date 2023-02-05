@@ -3,14 +3,15 @@ using SaveSystemNS;
 using ServiceNS;
 using SetupNS;
 using UnityEngine;
+using Terrain = SetupNS.Terrain;
 
 namespace WorldNS {
     public class FieldController : PoolableObject {
         public Vector2Int field;
-        //TODO: Rework this, move to own class
-        public SetupTerrain terrainGround;
-        public SetupTerrain terrainGrass;
-        public SetupTerrain terrainDecoration;
+        
+        public Terrain ground;
+        public Terrain grass;
+        public Terrain decoration;
         public readonly List<Entity> entities = new();
 
         public FieldTransformer fieldTransformer;
@@ -37,9 +38,9 @@ namespace WorldNS {
         
         public void Initialize(Vector2Int field) {
             this.field = field;
-            terrainGround = SetupCore.GetSetup<SetupTerrain>("Dirt");
-            terrainGrass = null;
-            terrainDecoration = null;
+            ground = Terrain.CreateTerrain(SetupCore.GetSetup<TerrainSetup>("Dirt"), this);
+            grass = null;
+            decoration = null;
             entities.Clear();
         }
 

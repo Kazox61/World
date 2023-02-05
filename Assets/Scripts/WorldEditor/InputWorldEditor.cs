@@ -22,7 +22,7 @@ namespace GameNS.WorldEditor {
         private PaintBrushLinear paintBrushLinear;
         private PaintBrushRectangular paintBrushRectangular;
 
-        public SetupTerrain currentSetupTerrain;
+        public TerrainSetup currentTerrainSetup;
         
         public string ConfigName => inputConfigName.text;
         
@@ -60,9 +60,9 @@ namespace GameNS.WorldEditor {
         }
 
         public void OnConfigNameChanged() {
-            var setup = SetupCore.GetSetup<SetupTerrain>(ConfigName);
+            var setup = SetupCore.GetSetup<TerrainSetup>(ConfigName);
             if (setup != null) {
-                currentSetupTerrain = setup;
+                currentTerrainSetup = setup;
             }
         }
 

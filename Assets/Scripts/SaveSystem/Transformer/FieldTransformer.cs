@@ -1,6 +1,7 @@
 ﻿using SetupNS;
 using UnityEngine;
 using WorldNS;
+using Terrain = SetupNS.Terrain;
 
 namespace SaveSystemNS {
     public class FieldTransformer {
@@ -11,9 +12,9 @@ namespace SaveSystemNS {
         }
 
         public DataField ToData() {
-            var ground = fieldController.terrainGround == null ? "" : fieldController.terrainGround.key;
-            var grass = fieldController.terrainGrass == null ? "" : fieldController.terrainGrass.key;
-            var decoration = fieldController.terrainDecoration == null ? "" : fieldController.terrainDecoration.key;
+            var ground = fieldController.ground == null ? "" : fieldController.ground.terrainSetup.key;
+            var grass = fieldController.grass == null ? "" : fieldController.grass.terrainSetup.key;
+            var decoration = fieldController.decoration == null ? "" : fieldController.decoration.terrainSetup.key;
             return new DataField() {
                 ground = ground,
                 grass = grass,
@@ -36,11 +37,11 @@ namespace SaveSystemNS {
         public void FromData(DataField dataField, Vector2Int field) {
             fieldController.Initialize(field);
             
-            fieldController.terrainGround = SetupCore.GetSetup<SetupTerrain>(dataField.ground);
-            fieldController.terrainGrass = SetupCore.GetSetup<SetupTerrain>(dataField.grass);
-            fieldController.terrainDecoration = SetupCore.GetSetup<SetupTerrain>(dataField.decoration);
+            fieldController.ground = Terrain.CreateTerrain(SetupCore.GetSetup<TerrainSetup>(dataField.ground), fieldController);
+            fieldController.grass = Terrain.CreateTerrain(SetupCore.GetSetup<TerrainSetup>(dataField.grass), fieldController);
+            fieldController.decoration = Terrain.CreateTerrain(SetupCore.GetSetup<TerrainSetup>(dataField.decoration), fieldController);
             foreach (var dataEntity in dataField.entities) {
-                var setup = SetupCore.GetSetup<SetupEntity>(dataEntity.name);
+                var setup = SetupCore.GetSetup<EntitySetup>(dataEntity.name);
                 var entity = Entity.CreateEntity(setup, GridHelper.PositionToField(new Vector2(dataEntity.position.x, dataEntity.position.y)));
                 fieldController.AddEntity(entity);
             }

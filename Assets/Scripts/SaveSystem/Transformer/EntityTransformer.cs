@@ -11,7 +11,7 @@ namespace SaveSystemNS {
         public DataEntity ToData() {
             var position = entity.transform.position;
             var data = new DataEntity() {
-                name = entity.setup.key,
+                name = entity.entitySetup.key,
                 position = new Position(position.x, position.y)
             };
             entity.Remove();

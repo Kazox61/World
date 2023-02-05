@@ -34,7 +34,6 @@ namespace WorldNS {
         }
 
         public static FieldController GetFieldController(Chunk chunk, Vector2Int field) {
-            Debug.Log(chunk);
             return chunk.fieldControllers.FirstOrDefault(item => item.field.Equals(field));
         }
         

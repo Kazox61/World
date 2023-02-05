@@ -13,7 +13,7 @@
         }
 
         private bool IsOverlappingEntities(DetectionSet detectionSet) {
-            var setupEntity = detectionSet.setupEntity;
+            var setupEntity = detectionSet.entitySetup;
             var field = detectionSet.field;
 
             return EntityHelper.GetOverlappingEntities(setupEntity, field).Count > 0;

@@ -7,7 +7,7 @@ using SetupNS;
 namespace WorldNS {
     public class Entity: MonoBehaviour {
        
-        public SetupEntity setup;
+        public EntitySetup entitySetup;
         public SpriteRenderer spriteRenderer;
         public EntityTransformer entityTransformer;
 
@@ -30,28 +30,28 @@ namespace WorldNS {
             entityTransformer = new EntityTransformer(this);
         }
         
-        public static Entity CreateEntity(SetupEntity setup, Vector2Int field) {
-            var entity = GameObjectPool.Instance.Get<Entity>(setup.prefab);
-            entity.setup = setup;
+        public static Entity CreateEntity(EntitySetup entitySetup, Vector2Int field) {
+            var entity = GameObjectPool.Instance.Get<Entity>(entitySetup.prefab);
+            entity.entitySetup = entitySetup;
             entity.Initialize(field);
             entity.Construct();
             return entity;
         }
 
-        public static Entity PlaceEntity(SetupEntity setupEntity, Vector2Int field) {
-            if (!CanCreateEntity(setupEntity, field)) {
+        public static Entity PlaceEntity(EntitySetup entitySetup, Vector2Int field) {
+            if (!CanCreateEntity(entitySetup, field)) {
                 return null;
             }
 
-            var entity = CreateEntity(setupEntity, field);
+            var entity = CreateEntity(entitySetup, field);
 
             ChunkManager.Instance.AddEntity(field, entity);
             return entity;
         }
         
-        public static bool CanCreateEntity(SetupEntity setupEntity, Vector2Int field) {
-            var detectionSet = new DetectionSet() { field = field, setupEntity = setupEntity };
-            var areaDetection = AreaDetectionBuilder.Instance.GetAreaDetection(setupEntity.ignoreDetectionLayers);
+        public static bool CanCreateEntity(EntitySetup entitySetup, Vector2Int field) {
+            var detectionSet = new DetectionSet() { field = field, entitySetup = entitySetup };
+            var areaDetection = AreaDetectionBuilder.Instance.GetAreaDetection(entitySetup.ignoreDetectionLayers);
             return areaDetection.IsClean(detectionSet);
         }
 
@@ -67,14 +67,14 @@ namespace WorldNS {
             return null;
         }
 
-        public bool OverlapsWith(SetupEntity setupEntity, Vector2Int field) {
-            var otherRect = setupEntity.GetRect(field);
+        public bool OverlapsWith(EntitySetup entitySetup, Vector2Int field) {
+            var otherRect = entitySetup.GetRect(field);
 
             return OverlapsWith(otherRect);
         }
 
         public bool OverlapsWith(Rect otherRect) {
-            var ownRect = setup.GetRect(Field);
+            var ownRect = entitySetup.GetRect(Field);
             Debug.DrawLine(new Vector3(ownRect.xMin, ownRect.yMin), new Vector3(ownRect.xMax, ownRect.yMin), Color.green, 100);
             Debug.DrawLine(new Vector3(ownRect.xMin, ownRect.yMax), new Vector3(ownRect.xMax, ownRect.yMax), Color.green, 100);
             Debug.DrawLine(new Vector3(ownRect.xMin, ownRect.yMin), new Vector3(ownRect.xMin, ownRect.yMax), Color.green, 100);
@@ -88,7 +88,7 @@ namespace WorldNS {
         }
         
         public void Remove() {
-            GameObjectPool.Instance.Release(gameObject, setup.prefab);
+            GameObjectPool.Instance.Release(gameObject, entitySetup.prefab);
         }
     }
 }

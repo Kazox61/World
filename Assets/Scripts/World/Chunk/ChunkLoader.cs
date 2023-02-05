@@ -15,18 +15,6 @@ namespace WorldNS {
             if (!success) {
                 chunk = Chunk.CreateChunk(position);
             }
-            
-            foreach (var fieldController in chunk.fieldControllers) {
-                if (fieldController.terrainGround != null) {
-                    ControllerTerrainLayers.Instance.SetTile(fieldController.terrainGround, fieldController.field);
-                }
-                if (fieldController.terrainGrass != null) {
-                    ControllerTerrainLayers.Instance.SetTile(fieldController.terrainGrass, fieldController.field);
-                }
-                if (fieldController.terrainDecoration != null) {
-                    ControllerTerrainLayers.Instance.SetTile(fieldController.terrainDecoration, fieldController.field);
-                }
-            }
 
             return chunk;
         }
