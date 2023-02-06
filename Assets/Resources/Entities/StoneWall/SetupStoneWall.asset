@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: SetupStoneWall
   m_EditorClassIdentifier: 
   key: StoneWall
-  prefab: {fileID: 7196392381530740526, guid: b00761e83cfe80947be15b41d200e2a2, type: 3}
+  prefab: {fileID: 66512945696405103, guid: acea532ed789df94684996c6e8bb0bc5, type: 3}
   defaultSprite: {fileID: 465282719, guid: 34c2d5884f9354143b72512b561573d7, type: 3}
   size: {x: 1, y: 1}
   blockField: 1
   ignoreDetectionLayers: 000000
+  isConnected: 1
   hardness: 10

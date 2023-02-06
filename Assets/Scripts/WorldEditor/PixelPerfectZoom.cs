@@ -7,7 +7,7 @@ namespace ServiceNS {
         public Camera mainCamera;
         public PixelPerfectCamera pixelPerfectCamera;
         
-        public float scale = 1;
+        private float scale = 4;
         private float currentScale;
         private float speed = 100;
         private float minScale = 1;

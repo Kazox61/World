@@ -5,10 +5,12 @@ using SetupNS;
 
 namespace WorldNS {
     public class Entity: MonoBehaviour {
-       [System.NonSerialized]
+        public EntityComposites composites;
+
+        [System.NonSerialized]
         public EntitySetup entitySetup;
         public EntityTransformer entityTransformer;
-
+        
         private bool constructed;
         public Vector2Int Field => GridHelper.PositionToField(transform.position);
 
@@ -29,7 +31,9 @@ namespace WorldNS {
         }
 
         public virtual void OnStartUp() {
-            
+            if (composites.entityCompConnected != null) {
+                composites.entityCompConnected.UpdateNeighbors();
+            }
         }
         
         public static Entity CreateEntity(EntitySetup entitySetup, Vector2Int field) {
