@@ -12,7 +12,7 @@ namespace WorldNS {
             var sprite = spriteRenderer.sprite;
             
             var positionY = (int)((transform.position.y - zeroLineHeight) * PixelsPerUnit);
-            var spriteHeight = (int)(sprite.pivot.y / sprite.texture.height * PixelsPerUnit);
+            var spriteHeight = (int)sprite.pivot.y;
             
             var sortingOrder = -positionY + spriteHeight - pixelOffset;
 

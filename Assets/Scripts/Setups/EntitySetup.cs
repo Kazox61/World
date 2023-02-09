@@ -4,7 +4,8 @@ using WorldNS;
 namespace SetupNS {
     [CreateAssetMenu(fileName = "EntitySetupBase", menuName = "EntitySetup", order = 0)]
     public class EntitySetup : SetupBase {
-        public Sprite defaultSprite;
+        public TerrainSetup terrain;
+        public ItemSetup itemSetup;
         public Vector2Int size = Vector2Int.one;
         public bool blockField = true;
         public bool[] ignoreDetectionLayers = { false, false, false };

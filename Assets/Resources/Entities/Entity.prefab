@@ -157,8 +157,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cdb4d6b396742a8b9c18a7511446748, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  setup: {fileID: 0}
-  spriteRenderer: {fileID: 6739151559231975941}
+  composites:
+    entityCompConnected: {fileID: 0}
 --- !u!114 &8234784308278291808
 MonoBehaviour:
   m_ObjectHideFlags: 0

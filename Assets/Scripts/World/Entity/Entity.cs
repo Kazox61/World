@@ -2,6 +2,7 @@
 using ServiceNS;
 using SaveSystemNS;
 using SetupNS;
+using Terrain = SetupNS.Terrain;
 
 namespace WorldNS {
     public class Entity: MonoBehaviour {
@@ -37,6 +38,11 @@ namespace WorldNS {
         }
         
         public static Entity CreateEntity(EntitySetup entitySetup, Vector2Int field) {
+            if (entitySetup.prefab == null) {
+                Terrain.PlaceTerrain(entitySetup.terrain, field);
+                return null;
+            }
+            
             var entity = GameObjectPool.Instance.Get<Entity>(entitySetup.prefab);
             entity.entitySetup = entitySetup;
             entity.Initialize(field);
@@ -50,6 +56,9 @@ namespace WorldNS {
             }
 
             var entity = CreateEntity(entitySetup, field);
+            if (entity == null) {
+                return null;
+            }
             ChunkManager.Instance.AddEntity(field, entity);
             entity.OnStartUp();
             return entity;

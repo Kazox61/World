@@ -1,12 +1,9 @@
 ﻿using UnityEngine;
-using WorldNS;
 
 namespace SetupNS {
     [CreateAssetMenu(fileName = "TerrainSetupBase", menuName = "TerrainSetup", order = 0)]
     public class TerrainSetup : SetupBase {
-        public Sprite defaultSprite;
         public int layer;
-        public bool[] ignoreDetectionLayers = { false, false, true };
         public SetupTerrainModification setupTerrainModification;
         
         [Header("Variations")]

@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ae1bd81b4694a19a71c38ae7ef196dd, type: 3}
+  m_Name: GrassPatchItem
+  m_EditorClassIdentifier: 
+  sprite: {fileID: -545450384, guid: 093d607450687b347ac70408d0db958e, type: 3}
+  stackSize: 99
+  placeAction: {fileID: 11400000, guid: c886eb63b6fff744694db64835821212, type: 2}
+  consumeAction: {fileID: 0}
+  toolAction: {fileID: 0}
+  attackAction: {fileID: 0}

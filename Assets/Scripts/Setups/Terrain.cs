@@ -26,10 +26,11 @@ namespace SetupNS {
         }
 
         public static Terrain PlaceTerrain(TerrainSetup terrainSetup, Vector2Int field) {
+            /*
             if (!CanCreateTerrain(terrainSetup, field)) {
                 return null;
             }
-
+            */
             var fieldController = ChunkManager.Instance.GetFieldController(field);
             var terrain = CreateTerrain(terrainSetup, fieldController);
 
@@ -50,11 +51,12 @@ namespace SetupNS {
             return terrain;
         }
         
-
+        /*
         public static bool CanCreateTerrain(TerrainSetup terrainSetup, Vector2Int field) {
             var detectionSet = new DetectionSet() { field = field, terrainSetup =  terrainSetup};
             var areaDetection = AreaDetectionBuilder.Instance.GetAreaDetection(terrainSetup.ignoreDetectionLayers);
             return areaDetection.IsClean(detectionSet);
         }
+        */
     }
 }

@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace GameNS.WorldEditor {
+namespace WorldBuilderNs {
     public class InputController : MonoBehaviour {
         public static InputController Instance { get; private set; }
         
