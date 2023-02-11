@@ -66,7 +66,7 @@ namespace WorldNS {
         
         public static bool CanCreateEntity(EntitySetup entitySetup, Vector2Int field) {
             var detectionSet = new DetectionSet() { field = field, entitySetup = entitySetup };
-            var areaDetection = AreaDetectionBuilder.Instance.GetAreaDetection(entitySetup.ignoreDetectionLayers);
+            var areaDetection = AreaDetectionBuilder.Instance.GetAreaDetection(entitySetup.areaDetectionLayers);
             return areaDetection.IsClean(detectionSet);
         }
 

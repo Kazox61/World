@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SetupNS;
 
 namespace WorldNS {
     public class AreaDetectionBuilder {
@@ -10,23 +11,20 @@ namespace WorldNS {
             new AreaDetectionLayerEntity()
         };
 
-        public AreaDetection GetAreaDetection(bool[] ignoreDetectionLayers = null) {
+        public AreaDetection GetAreaDetection(AreaDetectionLayers layers) {
             var areaDetection = new AreaDetection();
+            if (!layers.ignoreLayerGround) {
+                areaDetection.areaDetectionLayers.Add(areaDetectionLayers[0]);
+            }
 
-            if (ignoreDetectionLayers == null) {
-                areaDetection.areaDetectionLayers = areaDetectionLayers;
-                return areaDetection;
+            if (!layers.ignoreLayerDecoration) {
+                areaDetection.areaDetectionLayers.Add(areaDetectionLayers[1]);
+            }
+
+            if (!layers.ignoreLayerEntity) {
+                areaDetection.areaDetectionLayers.Add(areaDetectionLayers[2]);
             }
             
-            for (int i = 0; i < ignoreDetectionLayers.Length; i++) {
-                var ignore = ignoreDetectionLayers[i];
-
-                if (!ignore) {
-                    areaDetection.areaDetectionLayers.Add(areaDetectionLayers[i]);
-                }
-            }
-            
-
             return areaDetection;
         }
 

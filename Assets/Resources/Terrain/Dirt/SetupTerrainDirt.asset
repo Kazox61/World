@@ -13,26 +13,13 @@ MonoBehaviour:
   m_Name: SetupTerrainDirt
   m_EditorClassIdentifier: 
   key: Dirt
+  defaultSprite: {fileID: -1333729600, guid: 9cf9874d1337ced44ba173af2f3c3bb1, type: 3}
   prefab: {fileID: 0}
-  defaultSprite: {fileID: 21300000, guid: 9cf9874d1337ced44ba173af2f3c3bb1, type: 3}
   layer: 0
-  ignoreDetectionLayers: 000001
   setupTerrainModification: {fileID: 0}
-  defaultProbability: 0.9
+  defaultProbability: 0.752
   variationSprites:
-  - {fileID: 1939348330, guid: efa318d1732391e458b2ec52bd45598d, type: 3}
-  - {fileID: 488323136, guid: efa318d1732391e458b2ec52bd45598d, type: 3}
-  - {fileID: 1196919183, guid: efa318d1732391e458b2ec52bd45598d, type: 3}
-  - {fileID: -1427779700, guid: efa318d1732391e458b2ec52bd45598d, type: 3}
-  - {fileID: 347823556, guid: efa318d1732391e458b2ec52bd45598d, type: 3}
-  - {fileID: -1204953955, guid: efa318d1732391e458b2ec52bd45598d, type: 3}
-  - {fileID: -1829198256, guid: efa318d1732391e458b2ec52bd45598d, type: 3}
-  - {fileID: 332340565, guid: efa318d1732391e458b2ec52bd45598d, type: 3}
-  - {fileID: -798542, guid: efa318d1732391e458b2ec52bd45598d, type: 3}
-  - {fileID: 1093995682, guid: efa318d1732391e458b2ec52bd45598d, type: 3}
-  - {fileID: -2099629861, guid: efa318d1732391e458b2ec52bd45598d, type: 3}
-  - {fileID: -363031963, guid: efa318d1732391e458b2ec52bd45598d, type: 3}
-  - {fileID: -100780866, guid: efa318d1732391e458b2ec52bd45598d, type: 3}
-  - {fileID: -806898015, guid: efa318d1732391e458b2ec52bd45598d, type: 3}
-  - {fileID: 1153461769, guid: efa318d1732391e458b2ec52bd45598d, type: 3}
-  - {fileID: 1200792864, guid: efa318d1732391e458b2ec52bd45598d, type: 3}
+  - {fileID: 2056976082, guid: 9cf9874d1337ced44ba173af2f3c3bb1, type: 3}
+  - {fileID: -376023151, guid: 9cf9874d1337ced44ba173af2f3c3bb1, type: 3}
+  - {fileID: 143074626, guid: 9cf9874d1337ced44ba173af2f3c3bb1, type: 3}
+  - {fileID: 776716724, guid: 9cf9874d1337ced44ba173af2f3c3bb1, type: 3}
