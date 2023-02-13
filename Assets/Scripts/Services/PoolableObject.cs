@@ -1,5 +1,3 @@
 ﻿namespace ServiceNS {
-    public interface PoolableObject {
-        
-    }
+	public interface PoolableObject { }
 }

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 namespace WorldNS {
-    public class EntityCompBase: MonoBehaviour {
-        public Entity entity;
-    }
+	public class EntityCompBase : MonoBehaviour {
+		public Entity entity;
+	}
 }

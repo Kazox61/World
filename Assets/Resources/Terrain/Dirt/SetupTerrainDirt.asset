@@ -17,7 +17,7 @@ MonoBehaviour:
   prefab: {fileID: 0}
   layer: 0
   setupTerrainModification: {fileID: 0}
-  defaultProbability: 0.752
+  defaultProbability: 0.891
   variationSprites:
   - {fileID: 2056976082, guid: 9cf9874d1337ced44ba173af2f3c3bb1, type: 3}
   - {fileID: -376023151, guid: 9cf9874d1337ced44ba173af2f3c3bb1, type: 3}

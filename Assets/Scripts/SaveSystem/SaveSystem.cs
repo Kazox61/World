@@ -6,42 +6,44 @@ using UnityEngine;
 using WorldNS;
 
 namespace SaveSystemNS {
-    public class SaveSystem {
-        public static SaveSystem Instance = new();
-        private World world;
+	public class SaveSystem {
+		public static SaveSystem Instance = new();
+		private World world;
 
-        public World World {
-            get {
-                if (world == null) {
-                    LoadWorld();
-                }
-                return world;
-            }
-        }
+		public World World {
+			get {
+				if (world == null) {
+					LoadWorld();
+				}
 
-        private void LoadWorld() {
-            var file = Resources.Load<TextAsset>("save/world");
-            if (file == null) {
-                world = new World();
-                return;
-            }
-            var fileData = file.text;
-            world = JsonConvert.DeserializeObject<World>(fileData);
-        }
+				return world;
+			}
+		}
 
-        public void Save(DataChunk[] dataChunks) {
-            world.chunks = dataChunks;
-            var dataString = JsonConvert.SerializeObject(world);
-            var fileStream = new FileStream("Assets/Resources/save/world.json", FileMode.Create);
-            using var writer = new StreamWriter(fileStream);
-            writer.Write(dataString);
-        }
+		private void LoadWorld() {
+			var file = Resources.Load<TextAsset>("save/world");
+			if (file == null) {
+				world = new World();
+				return;
+			}
 
-        public void Build() {
-            foreach (var chunkData in world.chunks) {
-                var chunk = ObjectPool<Chunk>.Get();
-                chunk.chunkTransformer.FromData(chunkData);
-            }
-        }
-    }
+			var fileData = file.text;
+			world = JsonConvert.DeserializeObject<World>(fileData);
+		}
+
+		public void Save(DataChunk[] dataChunks) {
+			world.chunks = dataChunks;
+			var dataString = JsonConvert.SerializeObject(world);
+			var fileStream = new FileStream("Assets/Resources/save/world.json", FileMode.Create);
+			using var writer = new StreamWriter(fileStream);
+			writer.Write(dataString);
+		}
+
+		public void Build() {
+			foreach (var chunkData in world.chunks) {
+				var chunk = ObjectPool<Chunk>.Get();
+				chunk.chunkTransformer.FromData(chunkData);
+			}
+		}
+	}
 }

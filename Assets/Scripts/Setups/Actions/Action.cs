@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 
 namespace SetupNS {
-    public class Action: ScriptableObject {
-    }
+	public class Action : ScriptableObject { }
 }

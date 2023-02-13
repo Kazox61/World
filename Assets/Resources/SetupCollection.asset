@@ -16,10 +16,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 91762d43829d05d4f99cb4f21670d528, type: 2}
   - {fileID: 11400000, guid: 77bc034c13ea40e4494550fdf0ab5593, type: 2}
   - {fileID: 11400000, guid: e71d9b23dc1380e488b8ecef1a0c5d86, type: 2}
+  - {fileID: 11400000, guid: 409ed567ddbcd5f4b9c73f57930bcd6f, type: 2}
   entitySetups:
   - {fileID: 11400000, guid: 07d519f589459f84498f8545d8f980ba, type: 2}
   - {fileID: 11400000, guid: 75bd82ed1ae2ada47965a444020c9527, type: 2}
   - {fileID: 11400000, guid: 51a5dfa53a10b8b4a9dfc15cd52bbff8, type: 2}
   - {fileID: 11400000, guid: 93dfe2d4f64206445ac8d9db7a362615, type: 2}
+  - {fileID: 11400000, guid: b4e14d83716346942a68056921afaa6e, type: 2}
+  - {fileID: 11400000, guid: ffd9bd5a06e8ac34d98300869f884ec5, type: 2}
   actorSetups:
   - {fileID: 11400000, guid: 606704163901fae4388978d653af1ecc, type: 2}

@@ -19,5 +19,8 @@ MonoBehaviour:
   itemSetup: {fileID: 11400000, guid: 7b26e855928191448874a37c429e601c, type: 2}
   size: {x: 1, y: 1}
   blockField: 1
-  ignoreDetectionLayers: 000000
+  areaDetectionLayers:
+    ignoreLayerGround: 0
+    ignoreLayerDecoration: 0
+    ignoreLayerEntity: 1
   hardness: 10

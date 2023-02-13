@@ -1,53 +1,53 @@
 ﻿using SetupNS;
 
 namespace UserInterfaceNS {
-    public class Item {
-        public ItemSetup itemSetup;
-        public int amount;
+	public class Item {
+		public ItemSetup itemSetup;
+		public int amount;
 
-        public Item() { }
-        
-        public Item(ItemSetup itemSetup, int amount = 1) {
-            this.itemSetup = itemSetup;
-            this.amount = amount;
-        }
-        
-        public bool IsEqual(Item other) {
-            return itemSetup == other.itemSetup;
-        }
+		public Item() { }
 
-        public bool IsFull() {
-            return amount >= itemSetup.stackSize;
-        }
+		public Item(ItemSetup itemSetup, int amount = 1) {
+			this.itemSetup = itemSetup;
+			this.amount = amount;
+		}
 
-        public bool IsStackable() {
-            return itemSetup.stackSize > 1;
-        }
+		public bool IsEqual(Item other) {
+			return itemSetup == other.itemSetup;
+		}
 
-        public int Add(int addingAmount) {
-            var possibleAmount = amount + addingAmount;
+		public bool IsFull() {
+			return amount >= itemSetup.stackSize;
+		}
 
-            if (possibleAmount > itemSetup.stackSize) {
-                var remainingAmount = possibleAmount - itemSetup.stackSize;
-                return remainingAmount;
-            }
+		public bool IsStackable() {
+			return itemSetup.stackSize > 1;
+		}
 
-            amount = possibleAmount;
-            return 0;
-        }
+		public int Add(int addingAmount) {
+			var possibleAmount = amount + addingAmount;
 
-        public bool TrySplitOverhead(out Item overhead) {
-            overhead = null;
-            if (amount <= itemSetup.stackSize) {
-                return false;
-            }
+			if (possibleAmount > itemSetup.stackSize) {
+				var remainingAmount = possibleAmount - itemSetup.stackSize;
+				return remainingAmount;
+			}
 
-            var remaining = amount - itemSetup.stackSize;
-            overhead = new Item(itemSetup, remaining);
+			amount = possibleAmount;
+			return 0;
+		}
 
-            amount = itemSetup.stackSize;
-            
-            return true;
-        }
-    }
+		public bool TrySplitOverhead(out Item overhead) {
+			overhead = null;
+			if (amount <= itemSetup.stackSize) {
+				return false;
+			}
+
+			var remaining = amount - itemSetup.stackSize;
+			overhead = new Item(itemSetup, remaining);
+
+			amount = itemSetup.stackSize;
+
+			return true;
+		}
+	}
 }
